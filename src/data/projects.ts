@@ -17,7 +17,7 @@ export const projects: ProjectType[] = [
     about: "Sistema web/PLC para configuração radar SICK RMS1000 com áreas por amplitude. Monitora objetos específicos como barcos em eclusas. Integração S7 e interface real-time.",
     tech: ["Go", "NATS", "WebSocket", "React", "TypeScript", "Tailwind", "SVG/Figma", "Siemens S7"],
     filter: ["All", "Automação"],
-    thumbnail: "/images/projects/Projeto_Radar.svg",
+    thumbnail: "/images/Projeto_Radar.svg",
     github: "https://github.com/danilohenriquesilvalira/RADAR_COLETAS",
     link: null
   },
@@ -27,7 +27,7 @@ export const projects: ProjectType[] = [
     about: "Sistema robusto de comunicação entre múltiplos PLCs Siemens via TSEND_C/TRCV_C TCP/IP. Troca dinâmica de sinais e dados em tempo real com controle de erro automático.",
     tech: ["STEP 7", "TIA Portal", "SCL", "TSEND_C/TRCV_C", "TCP/IP", "PROFINET", "S7-1500", "HMI"],
     filter: ["All", "Automação"],
-    thumbnail: "/images/projects/Projeto_Send_Receive.svg",
+    thumbnail: "/images/Projeto_Send_Receive.svg",
     github: "https://github.com/DaniloHenriqueLira/Automacao",
     link: null
   },
@@ -37,7 +37,7 @@ export const projects: ProjectType[] = [
     about: "API robusta desenvolvida em Go para comunicação com PLCs Siemens. Endpoints RESTful para leitura/escrita de variáveis, monitoramento em tempo real e integração com sistemas SCADA.",
     tech: ["Go", "Gin", "REST API", "JSON", "Siemens S7", "TCP/IP", "GORM", "Docker"],
     filter: ["All", "Backend", "Automação"],
-    thumbnail: "/images/projects/Projeto_API_GO.svg",
+    thumbnail: "/images/Projeto_API_GO.svg",
     github: "https://github.com/danilohenriquesilvalira/Projeto_PLC",
     link: null
   },
