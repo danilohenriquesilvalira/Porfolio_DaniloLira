@@ -26,20 +26,20 @@ const TechExpertise = () => {
 
   // Array com todas as tecnologias reorganizado para melhor distribuição
   const technologies = [
-    { name: "TIA Portal", src: "/images/techExpertise/Tia_portal.svg", color: "#0066cc" },
-    { name: "Rockwell", src: "/images/techExpertise/Rockewell.svg", color: "#ff6b35" },
-    { name: "CODESYS", src: "/images/techExpertise/codasystem.svg", color: "#00a86b" },
-    { name: "React", src: "/images/techExpertise/react.svg", color: "#61dafb" },
-    { name: "TypeScript", src: "/images/techExpertise/typescript.svg", color: "#3178c6" },
-    { name: "JavaScript", src: "/images/techExpertise/javascript.svg", color: "#f7df1e" },
-    { name: "Python", src: "/images/techExpertise/python.svg", color: "#3776ab" },
-    { name: "Figma", src: "/images/techExpertise/Figma.svg", color: "#f24e1e" },
-    { name: "PostgreSQL", src: "/images/techExpertise/postgresql.svg", color: "#336791" },
-    { name: "MySQL", src: "/images/techExpertise/Mysql.svg", color: "#4479a1" },
-    { name: "Go", src: "/images/techExpertise/go.svg", color: "#00add8" },
-    { name: "Node-RED", src: "/images/techExpertise/node-red.svg", color: "#8f0000" },
-    { name: "VS Code", src: "/images/techExpertise/vsclde.svg", color: "#007acc" },
-    { name: "GitHub", src: "/images/techExpertise/github.svg", color: "#ffffff" }
+    { name: "TIA Portal", src: "/techExpertise/Tia_portal.svg", color: "#0066cc" },
+    { name: "Rockwell", src: "/techExpertise/Rockewell.svg", color: "#ff6b35" },
+    { name: "CODESYS", src: "/techExpertise/codasystem.svg", color: "#00a86b" },
+    { name: "React", src: "/techExpertise/react.svg", color: "#61dafb" },
+    { name: "TypeScript", src: "/techExpertise/typescript.svg", color: "#3178c6" },
+    { name: "JavaScript", src: "/techExpertise/javascript.svg", color: "#f7df1e" },
+    { name: "Python", src: "/techExpertise/python.svg", color: "#3776ab" },
+    { name: "Figma", src: "/techExpertise/Figma.svg", color: "#f24e1e" },
+    { name: "PostgreSQL", src: "/techExpertise/postgresql.svg", color: "#336791" },
+    { name: "MySQL", src: "/techExpertise/Mysql.svg", color: "#4479a1" },
+    { name: "Go", src: "/techExpertise/go.svg", color: "#00add8" },
+    { name: "Node-RED", src: "/techExpertise/node-red.svg", color: "#8f0000" },
+    { name: "VS Code", src: "/techExpertise/vsclde.svg", color: "#007acc" },
+    { name: "GitHub", src: "/techExpertise/github.svg", color: "#ffffff" }
   ];
 
   const styles: { [key: string]: CSSProperties } = {

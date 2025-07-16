@@ -86,8 +86,7 @@ const Herosections = () => {
       </div>
       */}
 
-      {/* Gradiente responsivo */}
-      <div className="hero-gradient" />
+      {/* ❌ GRADIENTE REMOVIDO COMPLETAMENTE */}
       
       {/* Container principal responsivo */}
       <div className="hero-wrapper">
@@ -126,7 +125,8 @@ const Herosections = () => {
           {/* Imagem do Danilo - LADO DIREITO */}
           <div className="order-1 md:order-2 flex justify-center md:justify-end items-center relative">
             
-            {/* SVG decorativo atrás da imagem - z-index: 1 */}
+            {/* ❌ CÍRCULOS SVG REMOVIDOS COMPLETAMENTE - ESTAS LINHAS FORAM DELETADAS:
+            
             <div className="hero-svg-container">
               <svg 
                 width="988" 
@@ -140,11 +140,14 @@ const Herosections = () => {
                 <circle opacity="0.03" cx="653.5" cy="512.5" r="605.5" stroke="white" strokeWidth="96"/>
               </svg>
             </div>
-
-            {/* Backdrop blur para destaque - z-index: 5 */}
-            <div className="hero-image-backdrop"></div>
             
-            {/* Imagem principal - z-index: 10 - USANDO Next.js Image */}
+            */}
+
+            {/* ❌ BACKDROP BLUR TAMBÉM REMOVIDO:
+            <div className="hero-image-backdrop"></div>
+            */}
+            
+            {/* Imagem principal - SOZINHA, SEM CÍRCULOS ATRÁS */}
             <Image
               src="/images/Danilo_Herosection.svg"
               alt="Danilo Lira - Especialista em Automação Industrial"

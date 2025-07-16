@@ -29,15 +29,15 @@ export default function HomePage() {
     },
     heroToTechSpacing: {
       height: '6rem',
-      backgroundColor: 'transparent'
+      backgroundColor: '#191919'  // ← CORRIGIDO: era 'transparent'
     },
     sectionSpacing: {
       height: '5rem',
-      backgroundColor: 'transparent'
+      backgroundColor: '#191919'  // ← CORRIGIDO: era 'transparent'
     },
     finalSpacing: {
       height: '4rem',
-      backgroundColor: 'transparent'
+      backgroundColor: '#191919'  // ← CORRIGIDO: era 'transparent'
     }
   }
 
@@ -47,33 +47,69 @@ export default function HomePage() {
       
       if (width <= 768) {
         return {
-          heroToTechSpacing: { height: '3rem' },
-          sectionSpacing: { height: '2.5rem' },
-          finalSpacing: { height: '2rem' }
+          heroToTechSpacing: { 
+            height: '3rem',
+            backgroundColor: '#191919'  // ← ADICIONADO
+          },
+          sectionSpacing: { 
+            height: '2.5rem',
+            backgroundColor: '#191919'  // ← ADICIONADO
+          },
+          finalSpacing: { 
+            height: '2rem',
+            backgroundColor: '#191919'  // ← ADICIONADO
+          }
         }
       }
       
       if (width <= 1024) {
         return {
-          heroToTechSpacing: { height: '4rem' },
-          sectionSpacing: { height: '3.5rem' },
-          finalSpacing: { height: '3rem' }
+          heroToTechSpacing: { 
+            height: '4rem',
+            backgroundColor: '#191919'  // ← ADICIONADO
+          },
+          sectionSpacing: { 
+            height: '3.5rem',
+            backgroundColor: '#191919'  // ← ADICIONADO
+          },
+          finalSpacing: { 
+            height: '3rem',
+            backgroundColor: '#191919'  // ← ADICIONADO
+          }
         }
       }
       
       if (width <= 1440) {
         return {
-          heroToTechSpacing: { height: '6rem' },
-          sectionSpacing: { height: '5rem' },
-          finalSpacing: { height: '4rem' }
+          heroToTechSpacing: { 
+            height: '6rem',
+            backgroundColor: '#191919'  // ← ADICIONADO
+          },
+          sectionSpacing: { 
+            height: '5rem',
+            backgroundColor: '#191919'  // ← ADICIONADO
+          },
+          finalSpacing: { 
+            height: '4rem',
+            backgroundColor: '#191919'  // ← ADICIONADO
+          }
         }
       }
     }
     
     return {
-      heroToTechSpacing: { height: '7rem' },
-      sectionSpacing: { height: '6rem' },
-      finalSpacing: { height: '5rem' }
+      heroToTechSpacing: { 
+        height: '7rem',
+        backgroundColor: '#191919'  // ← ADICIONADO
+      },
+      sectionSpacing: { 
+        height: '6rem',
+        backgroundColor: '#191919'  // ← ADICIONADO
+      },
+      finalSpacing: { 
+        height: '5rem',
+        backgroundColor: '#191919'  // ← ADICIONADO
+      }
     }
   }
 
