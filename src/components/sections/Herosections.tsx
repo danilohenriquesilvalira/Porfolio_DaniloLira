@@ -1,12 +1,11 @@
-﻿'use client';
-
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import './herosection.module.css';
+import './herosection.css';
 
-const HeroSection = () => {
-  // Estado para debug da tela - Você pode remover este useState e useEffect se só precisar ocultar a exibição
-  const [_screenInfo, setScreenInfo] = useState({
+const Herosections = () => {
+  // Estado para debug da tela - You can remove this useState and useEffect if you only need to hide the display.
+  // If you might need this logic for other purposes in the future, you can keep them.
+  const [_screenInfo, setScreenInfo] = useState({ // Added underscore here
     width: 0,
     height: 0,
     breakpoint: ''
@@ -23,29 +22,26 @@ const HeroSection = () => {
     return 'UNKNOWN';
   };
 
-  // Hook para monitorar o resize da tela
+  // Hook para monitorar o resize da tela - You can remove this useEffect as well if you're not using screenInfo elsewhere.
   useEffect(() => {
-    // Verificar se estamos no cliente
-    if (typeof window !== 'undefined') {
-      const updateScreenInfo = () => {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-        setScreenInfo({
-          width,
-          height,
-          breakpoint: getBreakpoint(width)
-        });
-      };
+    const updateScreenInfo = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      setScreenInfo({
+        width,
+        height,
+        breakpoint: getBreakpoint(width)
+      });
+    };
 
-      // Atualiza na primeira renderização
-      updateScreenInfo();
+    // Atualiza na primeira renderização
+    updateScreenInfo();
 
-      // Adiciona listener para resize
-      window.addEventListener('resize', updateScreenInfo);
+    // Adiciona listener para resize
+    window.addEventListener('resize', updateScreenInfo);
 
-      // Cleanup
-      return () => window.removeEventListener('resize', updateScreenInfo);
-    }
+    // Cleanup
+    return () => window.removeEventListener('resize', updateScreenInfo);
   }, []);
 
   // Função para scroll até a seção de projetos
@@ -121,7 +117,6 @@ const HeroSection = () => {
             <button 
               onClick={scrollToProjects}
               className="hero-button"
-              type="button"
             >
               VEJA MEUS PROJETOS
             </button>
@@ -140,8 +135,6 @@ const HeroSection = () => {
                 fill="none" 
                 xmlns="http://www.w3.org/2000/svg" 
                 className="hero-svg-decorative"
-                role="img"
-                aria-label="Elemento decorativo"
               >
                 <circle opacity="0.05" cx="653.5" cy="512.5" r="424.5" stroke="white" strokeWidth="96"/>
                 <circle opacity="0.03" cx="653.5" cy="512.5" r="605.5" stroke="white" strokeWidth="96"/>
@@ -171,4 +164,4 @@ const HeroSection = () => {
   );
 };
 
-export default HeroSection;
+export default Herosections;
