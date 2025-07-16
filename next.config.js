@@ -1,14 +1,14 @@
 ﻿/** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
   images: {
+    unoptimized: true,
     domains: ['github.com', 'raw.githubusercontent.com'],
-    formats: ['image/webp', 'image/avif'],
   },
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  typescript: {
+    ignoreBuildErrors: false,
   },
 }
 

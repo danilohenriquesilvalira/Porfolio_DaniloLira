@@ -10,6 +10,7 @@
 }
 
 export const projects: ProjectType[] = [
+  // PROJETOS REAIS - PRIMEIROS
   {
     id: 1,
     title: "Sistema Radar Industrial SICK RMS1000",
@@ -40,6 +41,8 @@ export const projects: ProjectType[] = [
     github: "https://github.com/danilohenriquesilvalira/Projeto_PLC",
     link: null
   },
+   
+  // PROJETOS EM CONSTRUÇÃO - DEPOIS DOS REAIS
   {
     id: 4,
     title: "Dashboard IoT Indústria 4.0",

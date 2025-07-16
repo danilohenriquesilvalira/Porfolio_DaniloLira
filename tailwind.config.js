@@ -5,6 +5,9 @@ module.exports = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -14,14 +17,16 @@ module.exports = {
           500: '#3b82f6',
           600: '#2563eb',
           700: '#1d4ed8',
+          DEFAULT: '#191919',
         },
         secondary: {
           50: '#f8fafc',
           500: '#64748b',
           600: '#475569',
           700: '#334155',
+          DEFAULT: '#64748b',
         },
-        // Cores específicas do seu projeto
+        // Cores específicas do projeto
         'tech-blue': '#0072BB',
         'tech-green': '#39B54A',
         'bg-primary': '#191919',
@@ -80,8 +85,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    // Se você tiver o plugin typography, descomente a linha abaixo
-    // require('@tailwindcss/typography'),
-  ],
+  plugins: [],
 }
