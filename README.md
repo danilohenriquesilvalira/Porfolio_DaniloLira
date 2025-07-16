@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+﻿#  Portfólio Next.js Moderno
 
-## Getting Started
+Um portfólio profissional construído com as tecnologias mais modernas do mercado.
 
-First, run the development server:
+##  Tecnologias
 
-```bash
+- **Next.js 14** - Framework React com App Router
+- **TypeScript** - Tipagem estática
+- **Tailwind CSS** - Estilização utilitária
+- **Framer Motion** - Animações fluidas
+- **React Hook Form + Zod** - Formulários com validação
+- **Next Themes** - Suporte a tema escuro
+- **Lucide React** - Ícones modernos
+
+##  Como executar
+
+\\\ash
+# Instalar dependências
+npm install
+
+# Executar em desenvolvimento
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Build para produção
+npm run build
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Executar produção
+npm start
+\\\
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+##  Estrutura do projeto
 
-## Learn More
+- \/src/app\ - Páginas e layouts (App Router)
+- \/src/components\ - Componentes reutilizáveis
+- \/src/lib\ - Utilitários e configurações
+- \/src/hooks\ - Hooks customizados
+- \/src/types\ - Tipos TypeScript
+- \/src/data\ - Dados estáticos
+- \/public\ - Arquivos estáticos
 
-To learn more about Next.js, take a look at the following resources:
+##  Personalização
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Edite os dados em \/src/data/\
+2. Adicione suas imagens em \/public/images/\
+3. Customize as cores em \	ailwind.config.js\
+4. Configure as informações pessoais em \/src/lib/constants.ts\
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+##  Deploy
 
-## Deploy on Vercel
+Este projeto está otimizado para deploy na **Vercel**:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Faça push para o GitHub
+2. Conecte seu repositório na Vercel
+3. Deploy automático!
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+**Desenvolvido com  usando Next.js**
