@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
-import Image from 'next/image'; // Assuming you still want this import, though not used in the final adjusted code
+// import Image from 'next/image'; // Não utilizado, pode ser removido se não for usar em outro lugar
 
 const HeroSection = () => {
   const scrollToProjects = () => {
@@ -99,13 +99,14 @@ const HeroSection = () => {
   const horizontalPaddingClasses = "px-4 sm:px-6 lg:px-8";
 
   return (
-    <section id="home" className="relative min-h-screen bg-black flex items-center justify-center overflow-hidden">
+    <section id="home" className="relative min-h-screen bg-black flex flex-col items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-black opacity-100 z-0"></div>
 
-      <div className={`relative z-10 max-w-7xl mx-auto ${horizontalPaddingClasses} py-20`}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      {/* AQUI ESTÁ A ÚNICA MUDANÇA: Aumentado o pt e diminuído o pb para mobile */}
+      <div className={`relative z-10 w-full max-w-7xl mx-auto ${horizontalPaddingClasses} pt-32 pb-8 lg:py-0`}> {/* Ajustado pt e pb para mobile */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center justify-center">
 
-          <div className="flex flex-col justify-center space-y-8 text-center lg:text-left order-2 lg:order-1">
+          <div className="flex flex-col justify-center space-y-8 text-center lg:text-left order-2 lg:order-1 pt-0 pb-0 sm:pt-0 sm:pb-0 lg:py-0">
             <div className="space-y-2">
               <p className="text-sm sm:text-base md:text-lg font-medium tracking-wider uppercase text-gray-300 animate-fade-in">
                 OLÁ, SOU O DANILO
@@ -138,11 +139,11 @@ const HeroSection = () => {
 
           <div className="flex justify-center lg:justify-end items-center order-1 lg:order-2 animate-fade-in animation-delay-800">
             <div className="relative">
-              {/* This div containing svgContent will be hidden on small screens and shown on large screens */}
+              {/* Este div contendo svgContent será hidden em telas pequenas e mostrado em telas grandes */}
               <div className="hidden lg:flex absolute top-1/2 -translate-y-1/2 right-0
-                          w-[500px] h-[500px] sm:w-[600px] sm:h-[600px] md:w-[700px] md:h-[700px] lg:w-[800px] lg:h-[800px] xl:w-[900px] xl:h-[900px]
-                          z-[1] overflow-visible items-center justify-center
-                          mr-[-100px] sm:mr-[-150px] md:mr-[-200px] lg:mr-[-250px] xl:mr-[-300px]">
+                                w-[500px] h-[500px] sm:w-[600px] sm:h-[600px] md:w-[700px] md:h-[700px] lg:w-[800px] lg:h-[800px] xl:w-[900px] xl:h-[900px]
+                                z-[1] overflow-visible items-center justify-center
+                                mr-[-100px] sm:mr-[-150px] md:mr-[-200px] lg:mr-[-250px] xl:mr-[-300px]">
                 {svgContent}
               </div>
             </div>
