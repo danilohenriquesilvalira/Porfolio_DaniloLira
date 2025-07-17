@@ -99,13 +99,19 @@ const HeroSection = () => {
   const horizontalPaddingClasses = "px-4 sm:px-6 lg:px-8";
 
   return (
-    <section id="home" className="relative min-h-screen bg-black flex flex-col items-center justify-center overflow-hidden">
+    // Removido min-h-screen do section principal para dar mais controle
+    // Adicionado h-screen para que o section ocupe 100% da altura da viewport.
+    // Usado items-start para alinhar o conteúdo ao topo, e então controlamos com padding.
+    <section id="home" className="relative h-screen bg-black flex flex-col items-center lg:justify-center overflow-hidden">
       <div className="absolute inset-0 bg-black opacity-100 z-0"></div>
 
-      {/* AQUI ESTÁ A ÚNICA MUDANÇA: Aumentado o pt e diminuído o pb para mobile */}
-      <div className={`relative z-10 w-full max-w-7xl mx-auto ${horizontalPaddingClasses} pt-32 pb-8 lg:py-0`}> {/* Ajustado pt e pb para mobile */}
+      {/* Ajustado pt e pb no container principal para mobile, removendo o lg:py-0 que estava resetando */}
+      {/* Usamos pt-[15vh] para um padding superior em porcentagem da viewport height para mobile */}
+      {/* No desktop (lg), voltamos para centralização normal, se necessário */}
+      <div className={`relative z-10 w-full max-w-7xl mx-auto ${horizontalPaddingClasses} pt-[15vh] pb-8 lg:py-0`}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center justify-center">
 
+          {/* Mantido o padding-y-0 para o conteúdo interno do texto, deixando o controle para o container pai */}
           <div className="flex flex-col justify-center space-y-8 text-center lg:text-left order-2 lg:order-1 pt-0 pb-0 sm:pt-0 sm:pb-0 lg:py-0">
             <div className="space-y-2">
               <p className="text-sm sm:text-base md:text-lg font-medium tracking-wider uppercase text-gray-300 animate-fade-in">
