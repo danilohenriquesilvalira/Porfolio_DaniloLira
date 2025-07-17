@@ -1,229 +1,130 @@
-'use client';
-
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react'; // Import useRef
 import Link from 'next/link';
 import { FaTimes, FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 
-// Definindo types para melhor organização e clareza
+// Define a interface para os links de navegação para tipagem explícita
 interface NavLink {
   title: string;
   id: string;
   path: string;
 }
 
-interface ScreenSize {
-  width: number;
-  height: number;
-  breakpoint: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
-}
-
-// Links de navegação do seu portfólio
-const navLinks: NavLink[] = [
+const navLinks: NavLink[] = [ // Explicitly type navLinks as an array of NavLink
   { title: 'Início', id: 'home', path: '#home' },
-  { title: 'Experiência', id: 'experiencia', path: '#experiencia' },
-  { title: 'Projetos', id: 'projects', path: '#projects' },
-  { title: 'Tech Stack', id: 'tech-expertise', path: '#tech-expertise' },
+  { title: 'Tech Stack', id: 'tech-expertise', path: '#tech-expertise' }, // Reordered
+  { title: 'Experiência', id: 'experiencia', path: '#experiencia' },     // Reordered
+  { title: 'Projetos', id: 'projects', path: '#projects' },               // Reordered
   { title: 'Contatos', id: 'contact', path: '#contact' },
 ];
 
 const Navbar = () => {
-  const [active, setActive] = useState('home');
-  const [toggle, setToggle] = useState(false);
-  const [screenSize, setScreenSize] = useState<ScreenSize>({
-    width: 0,
-    height: 0,
-    breakpoint: 'xs'
-  });
-  const [mounted, setMounted] = useState(false);
+  const [active, setActive] = useState<string>('home'); // Explicitly type active as string
+  const [toggle, setToggle] = useState<boolean>(false); // Explicitly type toggle as boolean
+  const [isNavigating, setIsNavigating] = useState<boolean>(false); // Explicitly type isNavigating as boolean
+  
+  // Use useRef para timeoutId para que não cause re-renders e mantenha a referência
+  const timeoutId = useRef<NodeJS.Timeout | number | null>(null);
 
-  // --- Efeito para detectar o tamanho da tela e definir o breakpoint ---
-  useEffect(() => {
-    setMounted(true);
-
-    const updateScreenSize = () => {
-      if (typeof window !== 'undefined') {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-
-        let breakpoint: ScreenSize['breakpoint'] = 'xs';
-        if (width >= 2560) breakpoint = '4xl';
-        else if (width >= 1921) breakpoint = '3xl';
-        else if (width >= 1441) breakpoint = '2xl';
-        else if (width >= 1200) breakpoint = 'xl';
-        else if (width >= 1024) breakpoint = 'lg';
-        else if (width >= 768) breakpoint = 'md';
-        else if (width >= 480) breakpoint = 'sm';
-
-        setScreenSize({ width, height, breakpoint });
-      }
-    };
-
-    updateScreenSize();
-    window.addEventListener('resize', updateScreenSize);
-
-    return () => {
-      window.removeEventListener('resize', updateScreenSize);
-    };
-  }, []);
-
-  // --- Efeito para detectar a seção ativa com base no scroll ---
   useEffect(() => {
     const handleScroll = () => {
-      const sections = navLinks.map(link => link.id);
-      const scrollPosition = window.scrollY + 100;
+      // Se está navegando via clique, não atualiza o estado ativo pela rolagem
+      if (isNavigating) return;
+      
+      // Obter a altura da navbar para ajustar o cálculo da posição
+      const navbar = document.querySelector('nav');
+      const navbarHeight = navbar ? navbar.offsetHeight : 0;
+      // Adicionar um pequeno buffer para garantir que a seção seja reconhecida antes
+      const scrollPosition = window.scrollY + navbarHeight + 10; 
 
-      if (window.scrollY <= 200) {
-        setActive('home');
-        return;
-      }
+      // Array para armazenar as seções encontradas, tipado explicitamente
+      const sectionsInView: { id: string; distance: number }[] = [];
 
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const sectionId = sections[i];
-        const element = document.getElementById(sectionId);
-
+      // Procura por todas as seções
+      navLinks.forEach(link => {
+        const element = document.getElementById(link.id);
         if (element) {
-          const offsetTop = element.offsetTop;
-          if (scrollPosition >= offsetTop - 150) {
-            setActive(sectionId);
-            break;
+          const rect = element.getBoundingClientRect();
+          const elementTop = rect.top + window.scrollY;
+          const elementBottom = elementTop + rect.height;
+          
+          // Verifica se a seção está visível
+          // Ajuste os valores de -200 e +200 conforme necessário para sua layout
+          if (scrollPosition >= elementTop - 200 && scrollPosition < elementBottom + 200) {
+            sectionsInView.push({
+              id: link.id,
+              distance: Math.abs(scrollPosition - elementTop)
+            });
           }
         }
+      });
+
+      // Se encontrou seções, ativa a mais próxima
+      if (sectionsInView.length > 0) {
+        const closestSection = sectionsInView.reduce((prev, current) => 
+          prev.distance < current.distance ? prev : current
+        );
+        setActive(closestSection.id);
+      } else if (window.scrollY <= 300) { // Mantém a lógica para 'home' se não houver seções em vista (ou no topo)
+        setActive('home');
       }
     };
 
-    const hash = window.location.hash.replace('#', '');
-    if (hash && navLinks.find(link => link.id === hash)) {
-      setActive(hash);
-    } else if (window.scrollY <= 200) {
-      setActive('home');
-    }
+    // Throttle para melhor performance
+    const throttledScroll = () => {
+      if (timeoutId.current) {
+        clearTimeout(timeoutId.current as number); // Type assertion for clearTimeout
+      }
+      timeoutId.current = setTimeout(handleScroll, 10);
+    };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
+    window.addEventListener('scroll', throttledScroll);
+    handleScroll(); // Chama imediatamente para definir o estado inicial
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', throttledScroll);
+      if (timeoutId.current) {
+        clearTimeout(timeoutId.current as number); // Type assertion for clearTimeout
+      }
     };
-  }, []);
+  }, [isNavigating]); // Dependência isNavigating para reexecutar o efeito quando muda
 
-  // --- Handler para clique em links de navegação ---
-  const handleLinkClick = (id: string) => {
+  // Tipagem explícita para o parâmetro 'id'
+  const handleLinkClick = (id: string) => { 
     setActive(id);
     setToggle(false);
+    setIsNavigating(true);
 
-    if (id === 'home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      window.history.pushState(null, '', '/');
-    } else {
-      const targetElement = document.getElementById(id);
-      if (targetElement) {
-        const offsetTop = targetElement.offsetTop - 80;
-        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-        window.history.pushState(null, '', `#${id}`);
+    // Pequeno delay para garantir que o DOM está atualizado e o scroll suave funcione
+    setTimeout(() => {
+      if (id === 'home') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.history.pushState(null, '', '/');
+      } else {
+        const targetElement = document.getElementById(id);
+        if (targetElement) {
+          const navbar = document.querySelector('nav');
+          const headerHeight = navbar ? navbar.offsetHeight : 0; // Use navbar height dynamically
+          const elementPosition = targetElement.offsetTop - headerHeight - 10; // Subtrai a altura da navbar e um pequeno buffer
+          window.scrollTo({ top: elementPosition, behavior: 'smooth' });
+          window.history.pushState(null, '', `#${id}`);
+        } else {
+          console.warn(`Elemento com id '${id}' não encontrado`);
+        }
       }
-    }
+      
+      // Reativa o scroll listener após a navegação ter sido concluída
+      setTimeout(() => {
+        setIsNavigating(false);
+      }, 1000); // Ajuste este tempo se a rolagem suave for mais longa
+    }, 100);
   };
 
-  const currentBreakpoint = mounted ? screenSize.breakpoint : 'xs';
-  const isDesktop = currentBreakpoint === 'lg' || currentBreakpoint === 'xl' ||
-                   currentBreakpoint === '2xl' || currentBreakpoint === '3xl' ||
-                   currentBreakpoint === '4xl';
-
-  // --- Funções para obter estilos dinâmicos baseados no breakpoint ---
-  const getLogoStyles = () => {
-    const baseStyles = "flex items-start text-decoration-none transition-all duration-300 relative z-10";
-
-    switch (currentBreakpoint) {
-      case '4xl':
-        return {
-          container: baseStyles,
-          icon: "w-32 h-32 flex items-center justify-center bg-transparent border-none transition-all duration-300 p-1 relative flex-shrink-0",
-          transform: "transform -translate-x-8 -translate-y-4"
-        };
-      case '3xl':
-        return {
-          container: baseStyles,
-          icon: "w-36 h-36 flex items-center justify-center bg-transparent border-none transition-all duration-300 p-1 relative flex-shrink-0",
-          transform: "transform -translate-x-24 -translate-y-3"
-        };
-      case '2xl':
-        return {
-          container: baseStyles,
-          icon: "w-24 h-24 flex items-center justify-center bg-transparent border-none transition-all duration-300 p-1 relative flex-shrink-0",
-          transform: "transform translate-y-[-15px]"
-        };
-      case 'xl':
-        return {
-          container: baseStyles,
-          icon: "w-20 h-20 flex items-center justify-center bg-transparent border-none transition-all duration-300 p-1 relative flex-shrink-0",
-          transform: "transform translate-y-[-8px]"
-        };
-      case 'lg':
-        return {
-          container: baseStyles,
-          icon: "w-16 h-16 flex items-center justify-center bg-transparent border-none transition-all duration-300 p-1 relative flex-shrink-0",
-          transform: "transform translate-y-[-5px]"
-        };
-      default:
-        return {
-          container: baseStyles,
-          icon: "w-16 h-16 flex items-center justify-center bg-transparent border-none transition-all duration-300 p-1 relative flex-shrink-0",
-          transform: "transform -translate-y-2"
-        };
-    }
-  };
-
-  const getDesktopNavStyles = () => {
-    switch (currentBreakpoint) {
-      case '4xl':
-        return {
-          container: "flex flex-row gap-12 items-start m-0 p-0 pt-4 h-auto justify-center transform translate-x-8 translate-y-[-16px]",
-          linkText: "text-xl",
-          gap: "gap-12"
-        };
-      case '3xl':
-        return {
-          container: "flex flex-row gap-12 items-center m-0 p-0 pt-4 h-auto justify-center transform translate-x-40 translate-y-2",
-          linkText: "text-lg",
-          gap: "gap-12"
-        };
-      case '2xl':
-        return {
-          container: "flex flex-row gap-8 items-center m-0 p-0 pt-4 h-auto justify-center transform translate-y-[-12px]",
-          linkText: "text-lg",
-          gap: "gap-8"
-        };
-      case 'xl':
-        return {
-          container: "flex flex-row gap-6 items-start m-0 p-0 pt-4 h-auto justify-center transform translate-y-[-8px]",
-          linkText: "text-base",
-          gap: "gap-6"
-        };
-      case 'lg':
-        return {
-          container: "flex flex-row gap-5 items-start m-0 p-0 pt-4 h-auto justify-center transform translate-y-[-5px]",
-          linkText: "text-sm",
-          gap: "gap-5"
-        };
-      default:
-        return {
-          container: "flex flex-row gap-8 items-start m-0 p-0 pt-4 h-auto justify-center",
-          linkText: "text-base",
-          gap: "gap-8"
-        };
-    }
-  };
-
-  const logoStyles = getLogoStyles();
-  const desktopStyles = getDesktopNavStyles();
-
-  // Componente SVG do Logo com detalhe azul sutil
-  const LogoSVG = ({ className = "" }: { className?: string }) => (
+  const LogoSVG = () => (
     <svg
       viewBox="0 0 29 29"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`w-full h-full transition-all duration-300 ${className}`}
+      className="w-8 h-8 md:w-10 md:h-10"
     >
       <g filter="url(#filter0_d_2905_557)">
         <path d="M12.8699 1H11.0343C11.0343 2.15566 11.0343 2.8329 11.0343 3.98856M12.8699 1H14.7449M12.8699 1V3.95926M12.8699 17.2524V3.95926M11.0343 17.2524C11.0343 12.092 11.0343 9.14899 11.0343 3.98856M11.0343 3.98856L6.80469 3.95926C6.80469 9.94354 6.80469 13.2987 6.80469 19.283V19.7517M12.8699 3.95926L15.0086 3.98856" stroke="white"/>
@@ -246,259 +147,162 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="absolute top-0 left-0 right-0 z-50 w-full flex items-center py-4 bg-transparent font-['Poppins']">
-      <div
-        className="w-full flex justify-between items-start max-w-screen-xl mx-auto min-h-16 pt-4"
-        style={{
-          padding: currentBreakpoint === 'xs' ? '0 0.5rem' :
-                   currentBreakpoint === 'sm' ? '0 1rem' :
-                   currentBreakpoint === 'md' ? '0 1.5rem' :
-                   currentBreakpoint === 'lg' ? '0 1.5rem' :
-                   currentBreakpoint === 'xl' ? '0 1.5rem' :
-                   currentBreakpoint === '2xl' ? '0 0rem' :
-                   currentBreakpoint === '3xl' ? '0 0rem' : '0 3rem'
-        }}
-      >
-
-        {/* Logo Link */}
-        <Link
-          href="#home"
-          className={`${logoStyles.container} hover:opacity-80 pt-2`}
-          onClick={(e) => {
-            e.preventDefault();
-            handleLinkClick('home');
-          }}
-        >
-          <div className={`${logoStyles.icon} ${logoStyles.transform}`}>
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          
+          {/* Logo */}
+          <Link
+            href="#home"
+            className="flex items-center hover:opacity-80 transition-opacity"
+            onClick={(e) => {
+              e.preventDefault();
+              handleLinkClick('home');
+            }}
+          >
             <LogoSVG />
-          </div>
-        </Link>
+          </Link>
 
-        {/* Navegação Desktop */}
-        <div className={`${isDesktop ? 'block' : 'hidden'} lg:block`}>
-          <ul className={desktopStyles.container}>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <li key={link.id} className="relative flex items-center">
-                <Link
-                  href={link.path}
-                  className={`text-gray-300 no-underline font-medium transition-all duration-300 relative flex items-center leading-none hover:text-white ${desktopStyles.linkText} ${
-                    active === link.id ? 'text-white' : ''
-                  }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleLinkClick(link.id);
-                  }}
-                >
-                  {link.title}
-                  {active === link.id && (
-                    <div className="absolute -bottom-2 left-0 right-0 h-0.5 rounded-sm" 
-                         style={{ backgroundColor: '#2563eb' }} />
-                  )}
-                </Link>
-              </li>
+              <Link
+                key={link.id}
+                href={link.path}
+                className={`relative px-3 py-2 text-sm font-medium transition-colors ${
+                  active === link.id 
+                    ? 'text-white' 
+                    : 'text-gray-300 hover:text-white'
+                }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleLinkClick(link.id);
+                }}
+              >
+                {link.title}
+                {active === link.id && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-sm" />
+                )}
+              </Link>
             ))}
-
-            {/* Links Sociais para Desktop */}
-            <div
-              className={`ml-6 flex ${desktopStyles.gap} items-start border-l pl-6 pt-4 h-auto justify-center ${
-                currentBreakpoint === '2xl' || currentBreakpoint === '3xl' || currentBreakpoint === '4xl'
-                  ? 'transform translate-y-[-12px]' : 'transform translate-y-[-8px]'
-              }`}
-              style={{ borderColor: '#2563eb' }}
-            >
+            
+            {/* Social Links */}
+            <div className="flex items-center space-x-4 ml-6 pl-6 border-l border-blue-600/30">
               <a
                 href="https://linkedin.com/in/danilo-lira-82b17516b"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-300 no-underline transition-all duration-300 w-8 h-8 rounded-full flex items-center justify-center text-lg flex-shrink-0 hover:text-white hover:bg-opacity-10"
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(37, 99, 235, 0.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                }}
-                aria-label="LinkedIn"
+                className="text-gray-300 hover:text-white hover:bg-blue-600/10 p-2 rounded-lg transition-all"
               >
-                <FaLinkedin />
+                <FaLinkedin size={16} />
               </a>
               <a
                 href="https://github.com/danilohenriquesilvalira"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-300 no-underline transition-all duration-300 w-8 h-8 rounded-full flex items-center justify-center text-lg flex-shrink-0 hover:text-white hover:bg-opacity-10"
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(37, 99, 235, 0.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                }}
-                aria-label="GitHub"
+                className="text-gray-300 hover:text-white hover:bg-blue-600/10 p-2 rounded-lg transition-all"
               >
-                <FaGithub />
+                <FaGithub size={16} />
               </a>
               <a
                 href="mailto:contato@danilolira.com"
-                className="text-gray-300 no-underline transition-all duration-300 w-8 h-8 rounded-full flex items-center justify-center text-lg flex-shrink-0 hover:text-white hover:bg-opacity-10"
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(37, 99, 235, 0.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                }}
-                aria-label="Email"
+                className="text-gray-300 hover:text-white hover:bg-blue-600/10 p-2 rounded-lg transition-all"
               >
-                <FaEnvelope />
+                <FaEnvelope size={16} />
               </a>
             </div>
-          </ul>
-        </div>
+          </div>
 
-        {/* Botão do Menu Mobile (Hambúrguer) */}
-        <div className={`${!isDesktop ? 'block' : 'hidden'} lg:hidden flex flex-1 justify-end items-center`}>
+          {/* Mobile menu button */}
           <button
             onClick={() => setToggle(!toggle)}
-            className={`relative w-12 h-12 rounded-2xl flex justify-center items-center bg-white bg-opacity-10 border border-opacity-20 cursor-pointer transition-all duration-300 hover:bg-opacity-20 ${
-              toggle ? 'bg-white' : ''
-            }`}
-            style={{
-              borderColor: toggle ? '#2563eb' : 'rgba(255, 255, 255, 0.2)'
-            }}
-            onMouseEnter={(e) => {
-              if (!toggle) {
-                e.currentTarget.style.borderColor = '#2563eb';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!toggle) {
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-              }
-            }}
-            aria-label={toggle ? "Fechar menu" : "Abrir menu"}
+            className="md:hidden w-10 h-10 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors"
           >
-            <div className="flex flex-col justify-center items-center w-5 h-5 relative">
-              <span
-                className={`block h-0.5 w-full bg-white rounded-sm transition-all duration-300 my-0.5 ${
-                  toggle ? 'rotate-45 translate-y-0.5 bg-gray-800' : ''
-                }`}
-              />
-              <span
-                className={`block h-0.5 w-full bg-white rounded-sm transition-all duration-300 my-0.5 ${
-                  toggle ? 'opacity-0 bg-gray-800' : ''
-                }`}
-              />
-              <span
-                className={`block h-0.5 w-full bg-white rounded-sm transition-all duration-300 my-0.5 ${
-                  toggle ? '-rotate-45 -translate-y-1.5 bg-gray-800' : ''
-                }`}
-              />
+            <div className="flex flex-col justify-center items-center w-5 h-5">
+              <span className={`block h-0.5 w-full bg-white rounded-sm transition-all ${toggle ? 'rotate-45 translate-y-0.5' : ''}`} />
+              <span className={`block h-0.5 w-full bg-white rounded-sm transition-all my-0.5 ${toggle ? 'opacity-0' : ''}`} />
+              <span className={`block h-0.5 w-full bg-white rounded-sm transition-all ${toggle ? '-rotate-45 -translate-y-1.5' : ''}`} />
             </div>
           </button>
+        </div>
 
-          {/* Menu Mobile Flutuante */}
-          {toggle && (
-            <>
-              <div
-                className="fixed inset-0 bg-black bg-opacity-50 z-40"
-                onClick={() => setToggle(false)}
-              />
+        {/* Mobile Menu */}
+        {toggle && (
+          <>
+            <div
+              className="fixed inset-0 bg-black/50 md:hidden"
+              onClick={() => setToggle(false)}
+            />
+            <div className="absolute top-full right-0 w-80 bg-gray-900/95 backdrop-blur-md border-l border-blue-600/20 shadow-xl md:hidden">
+              <div className="flex flex-col h-screen max-h-screen">
+                
+                {/* Header */}
+                <div className="flex items-center justify-between p-6 border-b border-blue-600/20">
+                  <span className="text-white font-semibold">Menu</span>
+                  <button
+                    onClick={() => setToggle(false)}
+                    className="w-8 h-8 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-gray-300 hover:text-white hover:bg-white/20 transition-colors"
+                  >
+                    <FaTimes size={14} />
+                  </button>
+                </div>
 
-              <div className="fixed top-0 right-0 h-screen w-80 bg-gray-900 bg-opacity-95 backdrop-blur-3xl z-50 border-l shadow-2xl"
-                   style={{
-                     background: 'rgba(17, 24, 39, 0.95)',
-                     backdropFilter: 'blur(20px)',
-                     borderLeft: '1px solid rgba(37, 99, 235, 0.2)'
-                   }}>
-                <div className="flex flex-col h-full">
+                {/* Navigation Links */}
+                <div className="flex-1 px-6 py-8">
+                  <div className="space-y-4">
+                    {navLinks.map((link) => (
+                      <Link
+                        key={link.id}
+                        href={link.path}
+                        className={`flex items-center gap-4 py-3 px-4 rounded-lg font-medium transition-all ${
+                          active === link.id
+                            ? 'text-white bg-blue-600/10 border border-blue-600/20'
+                            : 'text-gray-300 hover:text-white hover:bg-white/5'
+                        }`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleLinkClick(link.id);
+                        }}
+                      >
+                        <span className={`w-2 h-2 rounded-full ${active === link.id ? 'bg-blue-600' : 'bg-gray-600'}`} />
+                        {link.title}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
 
-                  <div className="flex items-center justify-between p-6 border-b"
-                       style={{ borderColor: 'rgba(37, 99, 235, 0.2)' }}>
-                    <div className="flex items-center">
-                      <span className="text-white font-semibold text-lg">Menu</span>
-                    </div>
-                    <button
-                      onClick={() => setToggle(false)}
-                      className="w-9 h-9 rounded-xl flex items-center justify-center text-gray-300 bg-white bg-opacity-10 border border-opacity-20 cursor-pointer transition-all duration-300 hover:text-white hover:bg-white hover:bg-opacity-20"
-                      style={{ borderColor: 'rgba(37, 99, 235, 0.2)' }}
+                {/* Social Links */}
+                <div className="p-6 border-t border-blue-600/20">
+                  <p className="text-gray-300 text-sm text-center font-medium mb-4">Conecte-se comigo</p>
+                  <div className="flex justify-center space-x-6">
+                    <a
+                      href="https://linkedin.com/in/danilo-lira-82b17516b"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-lg bg-white/10 border border-blue-600/20 flex items-center justify-center text-gray-300 hover:text-white hover:bg-white/20 hover:scale-110 transition-all"
                     >
-                      <FaTimes />
-                    </button>
+                      <FaLinkedin size={18} />
+                    </a>
+                    <a
+                      href="https://github.com/danilohenriquesilvalira"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-lg bg-white/10 border border-blue-600/20 flex items-center justify-center text-gray-300 hover:text-white hover:bg-white/20 hover:scale-110 transition-all"
+                    >
+                      <FaGithub size={18} />
+                    </a>
+                    <a
+                      href="mailto:contato@danilolira.com"
+                      className="w-10 h-10 rounded-lg bg-white/10 border border-blue-600/20 flex items-center justify-center text-gray-300 hover:text-white hover:bg-white/20 hover:scale-110 transition-all"
+                    >
+                      <FaEnvelope size={18} />
+                    </a>
                   </div>
-
-                  <div className="flex-1 px-6 py-8">
-                    <ul className="list-none m-0 p-0 flex flex-col gap-4">
-                      {navLinks.map((link, index) => (
-                        <li key={link.id} className="w-full">
-                          <Link
-                            href={link.path}
-                            className={`w-full flex items-center gap-4 py-4 px-6 rounded-xl font-medium text-base no-underline transition-all duration-300 transform hover:translate-x-1 ${
-                              active === link.id
-                                ? 'text-white bg-opacity-10 border shadow-lg'
-                                : 'text-gray-300 hover:text-white hover:bg-white hover:bg-opacity-5'
-                            }`}
-                            style={active === link.id ? {
-                              backgroundColor: 'rgba(37, 99, 235, 0.1)',
-                              borderColor: 'rgba(37, 99, 235, 0.2)'
-                            } : {}}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleLinkClick(link.id);
-                            }}
-                          >
-                            <span
-                              className={`w-3 h-3 rounded-full flex-shrink-0 transition-all duration-300 ${
-                                active === link.id ? 'shadow-md' : ''
-                              }`}
-                              style={{
-                                backgroundColor: active === link.id ? '#2563eb' : '#6b7280'
-                              }}
-                            />
-                            <span className="flex-1">{link.title}</span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="p-6 border-t"
-                       style={{ borderColor: 'rgba(37, 99, 235, 0.2)' }}>
-                    <p className="text-gray-300 text-sm m-0 mb-6 text-center font-medium">Conecte-se comigo</p>
-                    <div className="flex justify-center gap-6">
-                      <a
-                        href="https://linkedin.com/in/danilo-lira-82b17516b"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-12 h-12 rounded-xl bg-white bg-opacity-10 border flex items-center justify-center text-gray-300 no-underline text-xl transition-all duration-300 hover:text-white hover:bg-white hover:bg-opacity-20 hover:scale-110"
-                        style={{ borderColor: 'rgba(37, 99, 235, 0.2)' }}
-                        aria-label="LinkedIn"
-                      >
-                        <FaLinkedin />
-                      </a>
-                      <a
-                        href="https://github.com/danilohenriquesilvalira"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-12 h-12 rounded-xl bg-white bg-opacity-10 border flex items-center justify-center text-gray-300 no-underline text-xl transition-all duration-300 hover:text-white hover:bg-white hover:bg-opacity-20 hover:scale-110"
-                        style={{ borderColor: 'rgba(37, 99, 235, 0.2)' }}
-                        aria-label="GitHub"
-                      >
-                        <FaGithub />
-                      </a>
-                      <a
-                        href="mailto:contato@danilolira.com"
-                        className="w-12 h-12 rounded-xl bg-white bg-opacity-10 border flex items-center justify-center text-gray-300 no-underline text-xl transition-all duration-300 hover:text-white hover:bg-white hover:bg-opacity-20 hover:scale-110"
-                        style={{ borderColor: 'rgba(37, 99, 235, 0.2)' }}
-                        aria-label="Email"
-                      >
-                        <FaEnvelope />
-                      </a>
-                    </div>
-                  </div>
-
                 </div>
               </div>
-            </>
-          )}
-        </div>
+            </div>
+          </>
+        )}
       </div>
     </nav>
   );
