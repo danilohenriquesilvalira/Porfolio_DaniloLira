@@ -1,28 +1,8 @@
-﻿'use client';
-
-import { CSSProperties, useEffect, useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 const TechExpertise = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  // Carrega a fonte Montserrat
-  useEffect(() => {
-    // Verificar se estamos no cliente
-    if (typeof window !== 'undefined') {
-      const link = document.createElement('link');
-      link.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap';
-      link.rel = 'stylesheet';
-      document.head.appendChild(link);
-
-      return () => {
-        // Verificar se o link ainda existe antes de remover
-        if (document.head.contains(link)) {
-          document.head.removeChild(link);
-        }
-      };
-    }
-  }, []);
 
   // Array com todas as tecnologias reorganizado para melhor distribuição
   const technologies = [
@@ -42,197 +22,53 @@ const TechExpertise = () => {
     { name: "GitHub", src: "/techExpertise/github.svg", color: "#ffffff" }
   ];
 
-  const styles: { [key: string]: CSSProperties } = {
-    section: {
-      backgroundColor: '#000000', // Fundo preto igual ao hero
-      padding: '4rem 0',
-      fontFamily: "'Poppins', sans-serif"
-    },
-    container: {
-      maxWidth: '1400px',
-      margin: '0 auto',
-      padding: '0 2rem'
-    },
-    header: {
-      textAlign: 'center',
-      marginBottom: '4rem'
-    },
-    title: {
-      fontSize: '3rem',
-      fontWeight: '700',
-      margin: '0 0 1rem 0',
-      letterSpacing: '-0.03em'
-    },
-    subtitle: {
-      fontSize: '1.1rem',
-      color: '#9ca3af',
-      margin: 0,
-      fontWeight: '400',
-      letterSpacing: '0.5px'
-    },
-    grid: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(7, 1fr)',
-      gap: '3rem 2rem',
-      justifyItems: 'center',
-      alignItems: 'start'
-    },
-    techItem: {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-      gap: '1.2rem',
-      cursor: 'pointer',
-      position: 'relative'
-    },
-    techItemHover: {
-      transform: 'translateY(-10px) scale(1.05)'
-    },
-    techIcon: {
-      width: '70px',
-      height: '70px',
-      transition: 'all 0.4s ease',
-      objectFit: 'contain',
-      filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2))',
-      zIndex: 2
-    },
-    techIconHover: {
-      transform: 'scale(1.1)',
-      filter: 'drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3)) brightness(1.1)'
-    },
-    techName: {
-      fontFamily: "'Montserrat', 'Inter', 'Segoe UI', sans-serif",
-      fontWeight: '600',
-      fontSize: '0.9rem',
-      color: '#ffffff',
-      textAlign: 'center',
-      margin: 0,
-      lineHeight: '1.3',
-      letterSpacing: '0.5px',
-      transition: 'all 0.3s ease',
-      zIndex: 2
-    },
-    glowEffect: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      width: '120%',
-      height: '120%',
-      borderRadius: '50%',
-      transform: 'translate(-50%, -50%)',
-      opacity: 0,
-      transition: 'opacity 0.4s ease',
-      zIndex: 1,
-      pointerEvents: 'none'
-    }
-  };
-
-  // Responsividade melhorada - MOBILE MAIS COMPACTO
-  const getGridColumns = () => {
-    if (typeof window !== 'undefined') {
-      const width = window.innerWidth;
-      if (width <= 480) return 'repeat(3, 1fr)';    // MOBILE: 3 colunas
-      if (width <= 768) return 'repeat(4, 1fr)';    // TABLET PEQUENO: 4 colunas
-      if (width <= 1024) return 'repeat(5, 1fr)';   // TABLET: 5 colunas
-      if (width <= 1200) return 'repeat(5, 1fr)';   // Mantido
-      if (width <= 1440) return 'repeat(6, 1fr)';   // Mantido
-    }
-    return 'repeat(7, 1fr)';
-  };
-
-  const getIconSize = () => {
-    if (typeof window !== 'undefined') {
-      const width = window.innerWidth;
-      if (width <= 480) return { width: 45, height: 45 };  // MOBILE: menor para compactar
-      if (width <= 768) return { width: 55, height: 55 };  // TABLET PEQUENO: reduzido
-      if (width <= 1024) return { width: 65, height: 65 }; // TABLET: reduzido
-      if (width <= 1440) return { width: 80, height: 80 }; // Mantido
-      if (width <= 1920) return { width: 90, height: 90 }; // Mantido
-      if (width <= 2560) return { width: 110, height: 110 }; // 2K
-      if (width <= 3840) return { width: 130, height: 130 }; // 4K
-      return { width: 150, height: 150 }; // 5K+
-    }
-    return { width: 70, height: 70 };
-  };
-
-  const getGap = () => {
-    if (typeof window !== 'undefined') {
-      const width = window.innerWidth;
-      if (width <= 480) return '1.5rem 0.8rem';     // MOBILE: gap muito reduzido
-      if (width <= 768) return '2rem 1rem';         // TABLET PEQUENO: gap reduzido
-      if (width <= 1440) return '3rem 2rem';        // Mantido
-      if (width <= 1920) return '3.5rem 2.5rem';    // Full HD
-      if (width <= 2560) return '4rem 3rem';        // 2K
-      if (width <= 3840) return '4.5rem 3.5rem';    // 4K
-      return '5rem 4rem';                            // 5K+
-    }
-    return '3rem 2rem';
-  };
-
   return (
-    <section style={styles.section}>
-      <div style={styles.container}>
+    <section id="tech-expertise" className="bg-black py-16 font-['Poppins',_sans-serif]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
-        <div style={styles.header}>
-          <h2 style={styles.title}>
-            <span style={{ color: '#ffffff' }}>Tech</span>
-            <span style={{ color: '#2563eb' }}> Stack</span>
+        <div className="text-center mb-16">
+          <h2 className="text-5xl font-bold mb-4 tracking-[-0.03em]">
+            <span className="text-white">Tech</span>
+            <span className="text-blue-600"> Stack</span>
           </h2>
         </div>
 
         {/* Grid de Tecnologias */}
-        <div style={{
-          ...styles.grid,
-          gridTemplateColumns: getGridColumns(),
-          gap: getGap()
-        }}>
-          {technologies.map((tech, index) => {
-            const iconSize = getIconSize();
-            
-            return (
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-y-12 gap-x-6 justify-items-center items-start">
+          {technologies.map((tech, index) => (
+            <div
+              key={index}
+              className="relative flex flex-col items-center justify-center gap-4 cursor-pointer transition-all duration-400 ease-in-out hover:-translate-y-2 hover:scale-105"
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              {/* Efeito de brilho */}
               <div
-                key={index}
+                className="absolute top-1/2 left-1/2 w-[120%] h-[120%] rounded-full -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none transition-opacity duration-400 ease-in-out"
                 style={{
-                  ...styles.techItem,
-                  ...(hoveredIndex === index ? styles.techItemHover : {})
+                  background: `radial-gradient(circle, ${tech.color}40 0%, ${tech.color}20 30%, transparent 70%)`,
+                  opacity: hoveredIndex === index ? 0.6 : 0,
                 }}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-              >
-                {/* Efeito de brilho */}
-                <div
-                  style={{
-                    ...styles.glowEffect,
-                    background: `radial-gradient(circle, ${tech.color}40 0%, ${tech.color}20 30%, transparent 70%)`,
-                    opacity: hoveredIndex === index ? 0.6 : 0
-                  }}
-                ></div>
+              ></div>
 
-                <Image
-                  src={tech.src}
-                  alt={tech.name}
-                  width={iconSize.width}
-                  height={iconSize.height}
-                  style={{
-                    ...styles.techIcon,
-                    width: `${iconSize.width}px`,
-                    height: `${iconSize.height}px`,
-                    ...(hoveredIndex === index ? styles.techIconHover : {})
-                  }}
-                  priority={index < 7} // Carrega as primeiras 7 imagens com prioridade
-                />
-                <p style={{
-                  ...styles.techName,
-                  color: hoveredIndex === index ? tech.color : '#ffffff'
-                }}>
-                  {tech.name}
-                </p>
-              </div>
-            );
-          })}
+              <Image
+                src={tech.src}
+                alt={tech.name}
+                width={70} // Base size
+                height={70} // Base size
+                className="w-[45px] h-[45px] sm:w-[55px] sm:h-[55px] md:w-[65px] md:h-[65px] lg:w-[70px] lg:h-[70px] xl:w-[80px] xl:h-[80px] transition-all duration-400 ease-in-out object-contain drop-shadow-md z-20 group-hover:scale-110 group-hover:brightness-110"
+                style={hoveredIndex === index ? { filter: 'drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3)) brightness(1.1)' } : {}}
+                priority={index < 7} // Carrega as primeiras 7 imagens com prioridade
+              />
+              <p
+                className="font-semibold text-sm sm:text-base text-white text-center leading-tight tracking-wide z-20 transition-colors duration-300 ease-in-out"
+                style={{ color: hoveredIndex === index ? tech.color : '#ffffff' }}
+              >
+                {tech.name}
+              </p>
+            </div>
+          ))}
         </div>
 
       </div>

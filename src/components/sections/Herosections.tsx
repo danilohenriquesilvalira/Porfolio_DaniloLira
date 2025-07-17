@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
+import Image from 'next/image'; // Assuming you still want this import, though not used in the final adjusted code
 
 const HeroSection = () => {
   const scrollToProjects = () => {
@@ -9,22 +9,16 @@ const HeroSection = () => {
     }
   };
 
-  // State to hold the SVG elements, initially null
   const [svgContent, setSvgContent] = useState<React.ReactNode | null>(null);
 
-  // Use useEffect to ensure this logic only runs on the client after initial render
   useEffect(() => {
-    // Helper functions to generate semi-random positions and opacities
     const getRandom = (min: number, max: number) => Math.random() * (max - min) + min;
-
-    // Arrays to store dot and line positions
     const dots = [];
     const lines = [];
-    const numDots = 100; // Keeping 100 dots for density
+    const numDots = 100;
     const svgWidth = 100;
     const svgHeight = 100;
 
-    // Generate dots (circles)
     for (let i = 0; i < numDots; i++) {
       const cx = getRandom(5, svgWidth - 5);
       const cy = getRandom(5, svgHeight - 5);
@@ -33,7 +27,6 @@ const HeroSection = () => {
       dots.push({ cx, cy, r, opacity });
     }
 
-    // Generate lines connecting nearby dots
     const maxDistance = 15;
     for (let i = 0; i < numDots; i++) {
       for (let j = i + 1; j < numDots; j++) {
@@ -49,7 +42,6 @@ const HeroSection = () => {
       }
     }
 
-    // Set the SVG content into state
     setSvgContent(
       <svg
         className="absolute inset-0 w-full h-full"
@@ -104,16 +96,15 @@ const HeroSection = () => {
     );
   }, []);
 
+  const horizontalPaddingClasses = "px-4 sm:px-6 lg:px-8";
+
   return (
-    <section className="relative min-h-screen bg-black flex items-center justify-center overflow-hidden">
-      {/* Background Overlay */}
+    <section id="home" className="relative min-h-screen bg-black flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-black opacity-100 z-0"></div>
 
-      {/* Main Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className={`relative z-10 max-w-7xl mx-auto ${horizontalPaddingClasses} py-20`}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-          {/* Text Content */}
           <div className="flex flex-col justify-center space-y-8 text-center lg:text-left order-2 lg:order-1">
             <div className="space-y-2">
               <p className="text-sm sm:text-base md:text-lg font-medium tracking-wider uppercase text-gray-300 animate-fade-in">
@@ -145,33 +136,14 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Image/Visual Content */}
           <div className="flex justify-center lg:justify-end items-center order-1 lg:order-2 animate-fade-in animation-delay-800">
             <div className="relative">
-              {/* SVG Network - Tamanho ajustado para mobile */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] sm:w-[140%] sm:h-[140%] lg:w-[160%] lg:h-[160%] z-[1] overflow-visible">
+              {/* This div containing svgContent will be hidden on small screens and shown on large screens */}
+              <div className="hidden lg:flex absolute top-1/2 -translate-y-1/2 right-0
+                          w-[500px] h-[500px] sm:w-[600px] sm:h-[600px] md:w-[700px] md:h-[700px] lg:w-[800px] lg:h-[800px] xl:w-[900px] xl:h-[900px]
+                          z-[1] overflow-visible items-center justify-center
+                          mr-[-100px] sm:mr-[-150px] md:mr-[-200px] lg:mr-[-250px] xl:mr-[-300px]">
                 {svgContent}
-              </div>
-
-              {/* Profile Image Container - Tamanhos mais adequados para mobile */}
-              <div className="relative z-20 w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[450px] lg:h-[450px] xl:w-[500px] xl:h-[500px] flex items-center justify-center p-6 sm:p-8 border-2 border-blue-600/30 bg-gray-900 rounded-full">
-                <div className="w-full h-full bg-black rounded-full flex items-center justify-center p-4 sm:p-6 md:p-8">
-                  <div className="text-center">
-                    {/* Avatar menor para mobile */}
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-800 rounded-full flex items-center justify-center">
-                      <svg className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-                      </svg>
-                    </div>
-                    {/* Nome com tamanho responsivo */}
-                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1 sm:mb-2">Danilo Lira</h3>
-                    {/* Título com tamanho menor para caber no círculo */}
-                    <p className="text-xs sm:text-sm md:text-base text-blue-400 font-medium leading-tight">
-                      Automation<br className="sm:hidden" />
-                      <span className="sm:ml-1">Engineer</span>
-                    </p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

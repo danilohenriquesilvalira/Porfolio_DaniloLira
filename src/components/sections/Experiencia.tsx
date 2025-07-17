@@ -1,15 +1,14 @@
-﻿'use client';
-
+﻿import React, { useEffect, useState } from 'react';
 import { FaCalendarAlt, FaGraduationCap, FaBriefcase, FaTrophy } from 'react-icons/fa';
-import { CSSProperties, useEffect, useState } from 'react';
 
 const Experiencia = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
-    // Verificar se estamos no cliente
+    // Only run on the client side
     if (typeof window !== 'undefined') {
+      // Optional: Load Montserrat font if not already loaded globally (consider adding to _document.tsx or global CSS)
       const link = document.createElement('link');
       link.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap';
       link.rel = 'stylesheet';
@@ -25,11 +24,10 @@ const Experiencia = () => {
 
       window.addEventListener('resize', handleResize);
       window.addEventListener('touchstart', handleTouchDetect, { once: true });
-      handleResize();
-      handleTouchDetect();
+      handleResize(); // Set initial value
+      handleTouchDetect(); // Set initial value
 
       return () => {
-        // Cleanup - verificar se o link ainda existe antes de remover
         if (document.head.contains(link)) {
           document.head.removeChild(link);
         }
@@ -39,340 +37,75 @@ const Experiencia = () => {
     }
   }, []);
 
-  const getContentPadding = () => {
-    if (typeof window !== 'undefined') {
-      const width = window.innerWidth;
-      if (width <= 480) return '1.5rem';
-      if (width <= 768) return '2rem';
-      return '2.5rem';
-    }
-    return '2.5rem';
-  };
+  // Helper classes for dynamic hover effects based on touch device detection
+  const experienceItemHoverClasses = !isTouchDevice ? 'group-hover:border-l-blue-600 group-hover:pl-4 group-hover:translate-x-1 group-hover:bg-blue-600/5' : '';
+  const educationItemHoverClasses = !isTouchDevice ? 'group-hover:border-l-blue-600 group-hover:pl-4 group-hover:translate-x-1 group-hover:bg-blue-600/5' : '';
 
-  const getGridColumns = () => {
-    return isMobile ? '1fr' : '1fr 1fr';
-  };
-
-  const getResponsiveFontSize = (desktopSize: number, mobileFactor: number = 0.8) => {
-    return isMobile ? `${desktopSize * mobileFactor}rem` : `${desktopSize}rem`;
-  };
-
-  const getExperienceItemHoverStyles = () => (
-    isTouchDevice ? {} : {
-      borderLeft: '3px solid #2563eb', // Mudei para o azul padrão
-      paddingLeft: '1rem',
-      transform: 'translateX(5px)',
-      backgroundColor: 'rgba(37, 99, 235, 0.05)' // Sutil background azul no hover
-    }
-  );
-
-  const getExperienceItemLeaveStyles = () => (
-    isTouchDevice ? {} : {
-      borderLeft: 'none',
-      paddingLeft: '0',
-      transform: 'translateX(0)',
-      backgroundColor: 'transparent'
-    }
-  );
-
-  const getEducationItemHoverStyles = () => (
-    isTouchDevice ? {} : {
-      borderLeft: '3px solid #2563eb', // Também mudei para azul para consistência
-      paddingLeft: '1rem',
-      transform: 'translateX(5px)',
-      backgroundColor: 'rgba(37, 99, 235, 0.05)'
-    }
-  );
-
-  const getEducationItemLeaveStyles = () => (
-    isTouchDevice ? {} : {
-      borderLeft: 'none',
-      paddingLeft: '0',
-      transform: 'translateX(0)',
-      backgroundColor: 'transparent'
-    }
-  );
-
-  const styles: { [key: string]: CSSProperties } = {
-    section: {
-      backgroundColor: '#000000', // Fundo preto mantido
-      padding: '4rem 0',
-      fontFamily: "'Poppins', sans-serif"
-    },
-    container: {
-      maxWidth: '1200px',
-      margin: '0 auto',
-      padding: '0 2rem'
-    },
-    sectionTitle: {
-      fontSize: getResponsiveFontSize(3, 0.7),
-      fontWeight: '700',
-      textAlign: 'center',
-      marginBottom: '3rem',
-      fontFamily: "'Montserrat', sans-serif",
-      letterSpacing: '-0.025em'
-    },
-    mainCard: {
-      position: 'relative',
-      maxWidth: '1000px',
-      margin: '0 auto',
-      padding: '1rem'
-    },
-    // Card com bordas modernas e efeito glow sutil azul
-    blackCard: {
-      background: 'linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%)',
-      borderTopLeftRadius: '20px',
-      borderBottomRightRadius: '20px',
-      borderTopRightRadius: '50px',
-      borderBottomLeftRadius: '50px',
-      padding: getContentPadding(),
-      boxShadow: '0 25px 50px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(37, 99, 235, 0.1)', // Sutil borda azul
-      position: 'relative',
-      zIndex: 10,
-      border: '1px solid rgba(37, 99, 235, 0.2)', // Borda azul sutil
-    },
-    // Card branco com sutil toque azul
-    whiteCard: {
-      position: 'absolute',
-      bottom: '-20px',
-      right: '-20px',
-      width: '60%',
-      height: '80%',
-      background: 'linear-gradient(135deg, #ffffff 0%, #f8faff 100%)', // Sutil toque azul no branco
-      borderTopLeftRadius: '20px',
-      borderBottomRightRadius: '20px',
-      borderTopRightRadius: '50px',
-      borderBottomLeftRadius: '50px',
-      zIndex: 1,
-      display: isMobile ? 'none' : 'block',
-    },
-    // Card de fundo com tom azul escuro
-    backgroundCard: {
-      position: 'absolute',
-      bottom: '-30px',
-      right: '-30px',
-      width: '65%',
-      height: '85%',
-      background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)', // Gradiente azul
-      borderTopLeftRadius: '20px',
-      borderBottomRightRadius: '20px',
-      borderTopRightRadius: '50px',
-      borderBottomLeftRadius: '50px',
-      zIndex: 0,
-      display: isMobile ? 'none' : 'block',
-    },
-    contentGrid: {
-      display: 'grid',
-      gridTemplateColumns: getGridColumns(),
-      gap: isMobile ? '1.5rem' : '2rem',
-      alignItems: 'start'
-    },
-    leftColumn: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: isMobile ? '1rem' : '1.5rem',
-      height: '100%'
-    },
-    rightColumn: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: isMobile ? '1rem' : '1.5rem',
-      height: '100%'
-    },
-    sectionHeader: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '0.8rem',
-      marginBottom: '1rem'
-    },
-    sectionTitleInCard: {
-      fontSize: getResponsiveFontSize(1.3, 0.9),
-      fontWeight: '600',
-      color: '#ffffff',
-      fontFamily: "'Montserrat', sans-serif"
-    },
-    experienceList: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: isMobile ? '0.8rem' : '1rem',
-      flex: 1
-    },
-    experienceItem: {
-      background: 'transparent',
-      borderRadius: '8px', // Bordas mais suaves
-      padding: '1rem',
-      border: 'none',
-      borderBottom: '1px solid rgba(37, 99, 235, 0.2)', // Linha azul sutil
-      transition: isTouchDevice ? 'none' : 'all 0.3s ease',
-      cursor: isTouchDevice ? 'default' : 'pointer'
-    },
-    jobTitle: {
-      fontSize: getResponsiveFontSize(1, 0.9),
-      fontWeight: '600',
-      color: '#ffffff',
-      marginBottom: '0.4rem',
-      lineHeight: '1.3'
-    },
-    company: {
-      fontSize: getResponsiveFontSize(0.85, 0.9),
-      color: '#e2e8f0',
-      marginBottom: '0.4rem',
-      fontWeight: '400'
-    },
-    period: {
-      fontSize: getResponsiveFontSize(0.75, 0.9),
-      color: '#cbd5e1',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '0.4rem'
-    },
-    // Box de resumo com toque azul
-    summaryBox: {
-      background: 'rgba(37, 99, 235, 0.08)', // Background azul muito sutil
-      borderRadius: '12px',
-      padding: isMobile ? '1rem' : '1.5rem',
-      border: '1px solid rgba(37, 99, 235, 0.25)' // Borda azul
-    },
-    summaryText: {
-      fontSize: getResponsiveFontSize(0.85, 0.9),
-      color: '#d1d5db',
-      lineHeight: '1.6',
-      marginBottom: '1.5rem'
-    },
-    statsRow: {
-      display: 'flex',
-      justifyContent: 'space-around',
-      paddingTop: '1rem',
-      borderTop: '1px solid rgba(37, 99, 235, 0.25)' // Linha azul
-    },
-    statItem: {
-      textAlign: 'center'
-    },
-    statNumber: {
-      fontSize: getResponsiveFontSize(1.4, 0.9),
-      fontWeight: '700',
-      color: '#2563eb', // Números em azul!
-      display: 'block'
-    },
-    statLabel: {
-      fontSize: getResponsiveFontSize(0.75, 0.9),
-      color: '#e2e8f0',
-      marginTop: '0.3rem'
-    },
-    icon: {
-      fontSize: getResponsiveFontSize(1.2, 0.9),
-      opacity: 0.9
-    }
-  };
 
   return (
-    <section style={styles.section} id="experiencia">
-      <div style={styles.container}>
-        <h2 style={styles.sectionTitle}>
-          <span style={{ color: '#ffffff' }}>Experiência</span>
-          <span style={{ color: '#2563eb' }}> & Formação</span>
+    <section id="experiencia" className="bg-black py-16 font-['Poppins',_sans-serif]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-4xl sm:text-5xl font-bold text-center mb-12 font-['Montserrat',_sans-serif] tracking-[-0.025em]">
+          <span className="text-white">Experiência</span>
+          <span className="text-blue-600"> & Formação</span>
         </h2>
 
-        <div style={styles.mainCard}>
+        <div className="relative max-w-4xl mx-auto p-4">
           {/* Card de fundo azul - Oculto em mobile */}
-          <div style={styles.backgroundCard} />
-          
+          <div className="absolute bottom-[-30px] right-[-30px] w-[65%] h-[85%] bg-gradient-to-br from-blue-900 to-blue-800 rounded-tl-xl rounded-br-xl rounded-tr-[50px] rounded-bl-[50px] z-0 hidden md:block" />
+
           {/* Card Branco Decorativo - Oculto em mobile */}
-          <div style={styles.whiteCard} />
+          <div className="absolute bottom-[-20px] right-[-20px] w-[60%] h-[80%] bg-gradient-to-br from-white to-gray-50 rounded-tl-xl rounded-br-xl rounded-tr-[50px] rounded-bl-[50px] z-0 hidden md:block" />
 
           {/* Card Preto Principal (frente) */}
-          <div style={styles.blackCard}>
-            <div style={styles.contentGrid}>
+          <div className="relative z-10 bg-gradient-to-br from-neutral-900 to-black rounded-tl-xl rounded-br-xl rounded-tr-[50px] rounded-bl-[50px] p-6 sm:p-8 md:p-10 shadow-2xl border border-blue-600/20">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start">
 
               {/* Coluna Esquerda - Experiências */}
-              <div style={styles.leftColumn}>
-                <div style={styles.sectionHeader}>
-                  <FaBriefcase style={{ ...styles.icon, color: '#2563eb' }} />
-                  <h3 style={styles.sectionTitleInCard}>
+              <div className="flex flex-col gap-4 md:gap-6 h-full">
+                <div className="flex items-center gap-3 mb-2">
+                  <FaBriefcase className="text-blue-600 text-xl sm:text-2xl opacity-90" />
+                  <h3 className="text-lg sm:text-xl font-semibold text-white font-['Montserrat',_sans-serif]">
                     Experiência Profissional
                   </h3>
                 </div>
-                <div style={styles.experienceList}>
-                  <div
-                    style={styles.experienceItem}
-                    onMouseEnter={(e) => {
-                      if (!isTouchDevice) {
-                        Object.assign(e.currentTarget.style, getExperienceItemHoverStyles());
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isTouchDevice) {
-                        Object.assign(e.currentTarget.style, getExperienceItemLeaveStyles());
-                      }
-                    }}
-                  >
-                    <div style={styles.jobTitle}>Especialista em Automação Industrial & Full-Stack</div>
-                    <div style={styles.company}>RLS Automação Industrial • Lisboa, Portugal</div>
-                    <div style={styles.period}>
-                      <FaCalendarAlt style={{ fontSize: getResponsiveFontSize(0.65, 0.9), opacity: 0.7 }} />
+                <div className="flex flex-col gap-3 sm:gap-4 flex-1">
+                  {/* Experiência 1 */}
+                  <div className={`group bg-transparent rounded-lg p-4 border-b border-blue-600/20 transition-all duration-300 ease-in-out ${experienceItemHoverClasses}`}>
+                    <div className="text-base sm:text-lg font-semibold text-white mb-1 leading-tight">Especialista em Automação Industrial & Full-Stack</div>
+                    <div className="text-sm sm:text-base text-gray-200 mb-1 font-normal">RLS Automação Industrial • Lisboa, Portugal</div>
+                    <div className="text-xs sm:text-sm text-gray-400 flex items-center gap-1">
+                      <FaCalendarAlt className="text-gray-400 text-xs sm:text-sm opacity-70" />
                       jun 2024 - presente (1 ano)
                     </div>
                   </div>
 
-                  <div
-                    style={styles.experienceItem}
-                    onMouseEnter={(e) => {
-                      if (!isTouchDevice) {
-                        Object.assign(e.currentTarget.style, getExperienceItemHoverStyles());
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isTouchDevice) {
-                        Object.assign(e.currentTarget.style, getExperienceItemLeaveStyles());
-                      }
-                    }}
-                  >
-                    <div style={styles.jobTitle}>Técnico de Manutenção Elétrica & Automação</div>
-                    <div style={styles.company}>Central de Cervejas (Sagres) • Vialonga, Portugal</div>
-                    <div style={styles.period}>
-                      <FaCalendarAlt style={{ fontSize: getResponsiveFontSize(0.65, 0.9), opacity: 0.7 }} />
+                  {/* Experiência 2 */}
+                  <div className={`group bg-transparent rounded-lg p-4 border-b border-blue-600/20 transition-all duration-300 ease-in-out ${experienceItemHoverClasses}`}>
+                    <div className="text-base sm:text-lg font-semibold text-white mb-1 leading-tight">Técnico de Manutenção Elétrica & Automação</div>
+                    <div className="text-sm sm:text-base text-gray-200 mb-1 font-normal">Central de Cervejas (Sagres) • Vialonga, Portugal</div>
+                    <div className="text-xs sm:text-sm text-gray-400 flex items-center gap-1">
+                      <FaCalendarAlt className="text-gray-400 text-xs sm:text-sm opacity-70" />
                       dez 2023 - jun 2024 (7 meses)
                     </div>
                   </div>
 
-                  <div
-                    style={styles.experienceItem}
-                    onMouseEnter={(e) => {
-                      if (!isTouchDevice) {
-                        Object.assign(e.currentTarget.style, getExperienceItemHoverStyles());
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isTouchDevice) {
-                        Object.assign(e.currentTarget.style, getExperienceItemLeaveStyles());
-                      }
-                    }}
-                  >
-                    <div style={styles.jobTitle}>Técnico de Automação Industrial</div>
-                    <div style={styles.company}>Font Salem (Grupo Damm) • Santarém, Portugal</div>
-                    <div style={styles.period}>
-                      <FaCalendarAlt style={{ fontSize: getResponsiveFontSize(0.65, 0.9), opacity: 0.7 }} />
+                  {/* Experiência 3 */}
+                  <div className={`group bg-transparent rounded-lg p-4 border-b border-blue-600/20 transition-all duration-300 ease-in-out ${experienceItemHoverClasses}`}>
+                    <div className="text-base sm:text-lg font-semibold text-white mb-1 leading-tight">Técnico de Automação Industrial</div>
+                    <div className="text-sm sm:text-base text-gray-200 mb-1 font-normal">Font Salem (Grupo Damm) • Santarém, Portugal</div>
+                    <div className="text-xs sm:text-sm text-gray-400 flex items-center gap-1">
+                      <FaCalendarAlt className="text-gray-400 text-xs sm:text-sm opacity-70" />
                       jul 2023 - dez 2023 (6 meses)
                     </div>
                   </div>
 
-                  <div
-                    style={styles.experienceItem}
-                    onMouseEnter={(e) => {
-                      if (!isTouchDevice) {
-                        Object.assign(e.currentTarget.style, getExperienceItemHoverStyles());
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isTouchDevice) {
-                        Object.assign(e.currentTarget.style, getExperienceItemLeaveStyles());
-                      }
-                    }}
-                  >
-                    <div style={styles.jobTitle}>Técnico de Automação Sênior & Full-Stack</div>
-                    <div style={styles.company}>AB InBev • Pernambuco, Brasil</div>
-                    <div style={styles.period}>
-                      <FaCalendarAlt style={{ fontSize: getResponsiveFontSize(0.65, 0.9), opacity: 0.7 }} />
+                  {/* Experiência 4 */}
+                  <div className={`group bg-transparent rounded-lg p-4 border-b border-blue-600/20 transition-all duration-300 ease-in-out ${experienceItemHoverClasses}`}>
+                    <div className="text-base sm:text-lg font-semibold text-white mb-1 leading-tight">Técnico de Automação Sênior & Full-Stack</div>
+                    <div className="text-sm sm:text-base text-gray-200 mb-1 font-normal">AB InBev • Pernambuco, Brasil</div>
+                    <div className="text-xs sm:text-sm text-gray-400 flex items-center gap-1">
+                      <FaCalendarAlt className="text-gray-400 text-xs sm:text-sm opacity-70" />
                       fev 2014 - jan 2023 (9 anos)
                     </div>
                   </div>
@@ -380,56 +113,34 @@ const Experiencia = () => {
               </div>
 
               {/* Coluna Direita - Formação & Resumo */}
-              <div style={styles.rightColumn}>
+              <div className="flex flex-col gap-6 md:gap-8 h-full">
 
                 {/* Formação */}
                 <div>
-                  <div style={styles.sectionHeader}>
-                    <FaGraduationCap style={{ ...styles.icon, color: '#2563eb' }} />
-                    <h4 style={styles.sectionTitleInCard}>
+                  <div className="flex items-center gap-3 mb-2">
+                    <FaGraduationCap className="text-blue-600 text-xl sm:text-2xl opacity-90" />
+                    <h4 className="text-lg sm:text-xl font-semibold text-white font-['Montserrat',_sans-serif]">
                       Formação Acadêmica
                     </h4>
                   </div>
 
-                  <div style={styles.experienceList}>
-                    <div
-                      style={styles.experienceItem}
-                      onMouseEnter={(e) => {
-                        if (!isTouchDevice) {
-                          Object.assign(e.currentTarget.style, getEducationItemHoverStyles());
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (!isTouchDevice) {
-                          Object.assign(e.currentTarget.style, getEducationItemLeaveStyles());
-                        }
-                      }}
-                    >
-                      <div style={styles.jobTitle}>Tecnologia da Informação/Sistemas da Informação</div>
-                      <div style={styles.company}>Estácio • Pernambuco, Brasil</div>
-                      <div style={styles.period}>
-                        <FaCalendarAlt style={{ fontSize: getResponsiveFontSize(0.65, 0.9), opacity: 0.7 }} />
+                  <div className="flex flex-col gap-3 sm:gap-4 flex-1">
+                    {/* Formação 1 */}
+                    <div className={`group bg-transparent rounded-lg p-4 border-b border-blue-600/20 transition-all duration-300 ease-in-out ${educationItemHoverClasses}`}>
+                      <div className="text-base sm:text-lg font-semibold text-white mb-1 leading-tight">Tecnologia da Informação/Sistemas da Informação</div>
+                      <div className="text-sm sm:text-base text-gray-200 mb-1 font-normal">Estácio • Pernambuco, Brasil</div>
+                      <div className="text-xs sm:text-sm text-gray-400 flex items-center gap-1">
+                        <FaCalendarAlt className="text-gray-400 text-xs sm:text-sm opacity-70" />
                         abr 2021 - dez 2023
                       </div>
                     </div>
 
-                    <div
-                      style={styles.experienceItem}
-                      onMouseEnter={(e) => {
-                        if (!isTouchDevice) {
-                          Object.assign(e.currentTarget.style, getEducationItemHoverStyles());
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (!isTouchDevice) {
-                          Object.assign(e.currentTarget.style, getEducationItemLeaveStyles());
-                        }
-                      }}
-                    >
-                      <div style={styles.jobTitle}>Técnico em Automação Industrial</div>
-                      <div style={styles.company}>SENAI Pernambuco • Pernambuco, Brasil</div>
-                      <div style={styles.period}>
-                        <FaCalendarAlt style={{ fontSize: getResponsiveFontSize(0.65, 0.9), opacity: 0.7 }} />
+                    {/* Formação 2 */}
+                    <div className={`group bg-transparent rounded-lg p-4 border-b border-blue-600/20 transition-all duration-300 ease-in-out ${educationItemHoverClasses}`}>
+                      <div className="text-base sm:text-lg font-semibold text-white mb-1 leading-tight">Técnico em Automação Industrial</div>
+                      <div className="text-sm sm:text-base text-gray-200 mb-1 font-normal">SENAI Pernambuco • Pernambuco, Brasil</div>
+                      <div className="text-xs sm:text-sm text-gray-400 flex items-center gap-1">
+                        <FaCalendarAlt className="text-gray-400 text-xs sm:text-sm opacity-70" />
                         fev 2012 - dez 2014
                       </div>
                     </div>
@@ -437,36 +148,35 @@ const Experiencia = () => {
                 </div>
 
                 {/* Resumo */}
-                <div style={styles.summaryBox}>
-                  <div style={styles.sectionHeader}>
-                    <FaTrophy style={{ ...styles.icon, color: '#2563eb' }} />
-                    <h4 style={styles.sectionTitleInCard}>
+                <div className="bg-blue-600/10 rounded-xl p-4 sm:p-6 border border-blue-600/25 mt-4 md:mt-0">
+                  <div className="flex items-center gap-3 mb-2">
+                    <FaTrophy className="text-blue-600 text-xl sm:text-2xl opacity-90" />
+                    <h4 className="text-lg sm:text-xl font-semibold text-white font-['Montserrat',_sans-serif]">
                       Resumo
                     </h4>
                   </div>
 
-                  <p style={styles.summaryText}>
-                    Especialista em Automação Industrial e Desenvolvedor Full-Stack com 10+ anos de experiência em projetos industriais complexos. Atuação consolidada em grandes cervejarias como AB InBev, Sagres e Font Salem.
+                  <p className="text-sm sm:text-base text-gray-300 leading-relaxed mb-6">
+                    Especialista em Automação Industrial e Desenvolvedor Full-Stack com **mais de 10 anos de experiência** em projetos industriais complexos. Atuação consolidada em grandes cervejarias como AB InBev, Sagres e Font Salem.
                   </p>
 
-                  <div style={styles.statsRow}>
-                    <div style={styles.statItem}>
-                      <span style={styles.statNumber}>10+</span>
-                      <span style={styles.statLabel}>Anos</span>
+                  <div className="flex justify-around pt-4 border-t border-blue-600/25">
+                    <div className="text-center">
+                      <span className="block text-2xl sm:text-3xl font-bold text-blue-600">10+</span>
+                      <span className="text-xs sm:text-sm text-gray-200 mt-1">Anos</span>
                     </div>
-                    <div style={styles.statItem}>
-                      <span style={styles.statNumber}>5</span>
-                      <span style={styles.statLabel}>Empresas</span>
+                    <div className="text-center">
+                      <span className="block text-2xl sm:text-3xl font-bold text-blue-600">5</span>
+                      <span className="text-xs sm:text-sm text-gray-200 mt-1">Empresas</span>
                     </div>
-                    <div style={styles.statItem}>
-                      <span style={styles.statNumber}>2</span>
-                      <span style={styles.statLabel}>Países</span>
+                    <div className="text-center">
+                      <span className="block text-2xl sm:text-3xl font-bold text-blue-600">2</span>
+                      <span className="text-xs sm:text-sm text-gray-200 mt-1">Países</span>
                     </div>
                   </div>
                 </div>
 
               </div>
-
             </div>
           </div>
 
