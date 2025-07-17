@@ -2,7 +2,7 @@
 import { Poppins } from 'next/font/google'
 import './globals.css'
 
-const poppins = Poppins({ 
+const poppins = Poppins({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-poppins',
@@ -49,11 +49,14 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={poppins.variable}>
       <head>
+        {/* Seu logo SVG como favicon principal */}
+        <link rel="icon" href="/favicon-32x32.svg" type="image/svg+xml" />
+
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link 
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" 
-          rel="stylesheet" 
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#191919" />
