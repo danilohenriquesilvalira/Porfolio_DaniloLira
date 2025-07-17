@@ -49,7 +49,7 @@ export const projects: ProjectType[] = [
     about: "Plataforma web para visualização de dados de sensores IoT em tempo real com alertas automáticos, relatórios detalhados e análise preditiva para manufatura inteligente.",
     tech: ["React", "Node.js", "MongoDB", "MQTT", "InfluxDB", "Grafana"],
     filter: ["All", "IoT", "Web Development"],
-    thumbnail: "/images/projects/Projeto_Desenvolvimento.svg",
+    thumbnail: "/images/Projeto_Desenvolvimento.svg",
     github: "#",
     link: "#"
   },
@@ -59,7 +59,7 @@ export const projects: ProjectType[] = [
     about: "Aplicativo mobile para registro e acompanhamento de ordens de manutenção preventiva e corretiva com notificações push, relatórios e integração com sistemas ERP.",
     tech: ["React Native", "Firebase", "TypeScript", "Push Notifications"],
     filter: ["All", "Mobile"],
-    thumbnail: "/images/projects/Projeto_Desenvolvimento.svg",
+    thumbnail: "/images/Projeto_Desenvolvimento.svg",
     github: "#",
     link: "#"
   },
@@ -69,7 +69,7 @@ export const projects: ProjectType[] = [
     about: "API robusta para integração de sistemas ERP com equipamentos de automação industrial. Autenticação JWT, documentação completa e alta disponibilidade.",
     tech: ["Node.js", "PostgreSQL", "Docker", "JWT", "Swagger", "Redis"],
     filter: ["All", "Backend"],
-    thumbnail: "/images/projects/Projeto_Desenvolvimento.svg",
+    thumbnail: "/images/Projeto_Desenvolvimento.svg",
     github: "#",
     link: "#"
   },
@@ -79,7 +79,7 @@ export const projects: ProjectType[] = [
     about: "Portal web completo para gestão de produção, qualidade e manutenção de equipamentos industriais com dashboards interativos e relatórios em tempo real.",
     tech: ["React", "TypeScript", "Node.js", "MySQL", "Chart.js", "Material-UI"],
     filter: ["All", "Web Development"],
-    thumbnail: "/images/projects/Projeto_Desenvolvimento.svg",
+    thumbnail: "/images/Projeto_Desenvolvimento.svg",
     github: "#",
     link: "#"
   },

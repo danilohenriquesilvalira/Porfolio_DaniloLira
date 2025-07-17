@@ -44,7 +44,7 @@ const TechExpertise = () => {
 
   const styles: { [key: string]: CSSProperties } = {
     section: {
-      backgroundColor: '#191919',
+      backgroundColor: '#000000', // Fundo preto igual ao hero
       padding: '4rem 0',
       fontFamily: "'Poppins', sans-serif"
     },
@@ -60,13 +60,8 @@ const TechExpertise = () => {
     title: {
       fontSize: '3rem',
       fontWeight: '700',
-      background: 'linear-gradient(135deg, #ffffff 0%, #e5e5e5 100%)',
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: 'transparent',
-      backgroundClip: 'text',
       margin: '0 0 1rem 0',
-      letterSpacing: '-0.03em',
-      textShadow: '0 4px 20px rgba(255,255,255,0.1)'
+      letterSpacing: '-0.03em'
     },
     subtitle: {
       fontSize: '1.1rem',
@@ -183,7 +178,8 @@ const TechExpertise = () => {
         {/* Header */}
         <div style={styles.header}>
           <h2 style={styles.title}>
-            Tech Stack
+            <span style={{ color: '#ffffff' }}>Tech</span>
+            <span style={{ color: '#2563eb' }}> Stack</span>
           </h2>
         </div>
 

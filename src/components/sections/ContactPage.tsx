@@ -85,7 +85,7 @@ const ContactPage = () => {
       position: 'relative',
       width: '100%',
       minHeight: '100vh',
-      backgroundColor: '#191919',
+      backgroundColor: '#000000ff',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -601,7 +601,10 @@ const ContactPage = () => {
           
           {/* Header */}
           <div style={styles.header}>
-            <h1 style={styles.title}>Vamos Conversar</h1>
+            <h1 style={styles.title}>
+            <span style={{color: 'white'}}>Vamos </span>
+            <span style={{color: '#2563eb'}}>Conversar</span>
+           </h1>
             <p style={styles.subtitle}>
               Especialista em Automação Industrial e Desenvolvimento de Sistemas. 
               Pronto para transformar suas ideias em soluções tecnológicas.

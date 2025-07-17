@@ -44,7 +44,7 @@ function ProjectsPage() {
     }
   }, []);
 
-  // CSS inline para animações
+  // CSS inline para animações - MELHORADO
   const keyframes = `
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
@@ -65,6 +65,14 @@ function ProjectsPage() {
     @keyframes pulse {
       0%, 100% { opacity: 0.3; }
       50% { opacity: 0.8; }
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 5px rgba(37, 99, 235, 0.3); }
+      50% { box-shadow: 0 0 20px rgba(37, 99, 235, 0.6); }
     }
   `;
 
@@ -146,7 +154,7 @@ function ProjectsPage() {
     return '800px';
   };
 
-  // Filtros com ícones SVG
+  // Filtros com ícones SVG - ÍCONES AZUIS MELHORADOS
   const filterOptions = [
     {
       name: 'All',
@@ -211,7 +219,7 @@ function ProjectsPage() {
   ];
 
   return (
-    <section id="projects" style={{ backgroundColor: '#191919' }}>
+    <section id="projects" style={{ backgroundColor: '#000000' }}>
       <style jsx>{keyframes}</style>
 
       <div style={{
@@ -224,25 +232,21 @@ function ProjectsPage() {
           animation: 'fadeIn 0.8s ease-out forwards',
           animationDelay: '0.2s'
         }}>
-          {/* TÍTULO */}
+          {/* TÍTULO COM PADRÃO AZUL */}
           <h2
             className="relative text-center mb-8"
             style={{
               fontSize: '3rem',
               fontWeight: '700',
-              background: 'linear-gradient(135deg, #ffffff 0%, #e5e5e5 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
               margin: '0 0 1rem 0',
-              letterSpacing: '-0.03em',
-              textShadow: '0 4px 20px rgba(255,255,255,0.1)'
+              letterSpacing: '-0.03em'
             }}
           >
-            Projetos
+            <span style={{ color: '#ffffff' }}>Meus</span>
+            <span style={{ color: '#2563eb' }}> Projetos</span>
           </h2>
 
-          {/* FILTRO MODERNO COM SUBLINHADO ESTILO NAVBAR */}
+          {/* FILTRO MODERNO COM SUBLINHADO ESTILO NAVBAR - MELHORADO */}
           <div style={{
             display: 'flex',
             justifyContent: 'center',
@@ -262,8 +266,8 @@ function ProjectsPage() {
                   gap: '0.5rem',
                   cursor: 'pointer',
                   position: 'relative',
-                  padding: '0.5rem 0',
-                  color: selectedFilter === filter.name ? '#ffffff' : '#d1d5db',
+                  padding: '0.75rem 0', // Padding maior para melhor touch target
+                  color: selectedFilter === filter.name ? '#2563eb' : '#d1d5db', // AZUL NO ATIVO
                   fontSize: '0.875rem',
                   fontWeight: selectedFilter === filter.name ? '600' : '500',
                   transition: 'all 0.3s ease',
@@ -271,7 +275,7 @@ function ProjectsPage() {
                 }}
                 onMouseEnter={(e) => {
                   if (selectedFilter !== filter.name) {
-                    e.currentTarget.style.color = '#ffffff';
+                    e.currentTarget.style.color = '#2563eb'; // HOVER AZUL
                   }
                 }}
                 onMouseLeave={(e) => {
@@ -284,7 +288,8 @@ function ProjectsPage() {
                   display: 'flex',
                   alignItems: 'center',
                   filter: selectedFilter === filter.name ? 'brightness(1)' : 'brightness(0.7)',
-                  transition: 'filter 0.3s ease'
+                  transition: 'filter 0.3s ease',
+                  color: selectedFilter === filter.name ? '#2563eb' : 'inherit' // ÍCONE AZUL QUANDO ATIVO
                 }}>
                   {filter.icon}
                 </div>
@@ -292,7 +297,7 @@ function ProjectsPage() {
                 {(!isMobile() || selectedFilter === filter.name) && (
                   <span>{filter.label}</span>
                 )}
-                {/* Sublinhado ativo */}
+                {/* Sublinhado ativo - AZUL COM EFEITO GLOW */}
                 {selectedFilter === filter.name && (
                   <div 
                     style={{
@@ -300,10 +305,11 @@ function ProjectsPage() {
                       bottom: '-2px',
                       left: 0,
                       right: 0,
-                      height: '2px',
-                      background: '#ffffff',
-                      borderRadius: '1px',
-                      animation: 'slideIn 0.3s ease-out forwards'
+                      height: '3px', // Linha mais grossa
+                      background: 'linear-gradient(90deg, #2563eb 0%, #3b82f6 50%, #2563eb 100%)', // GRADIENTE AZUL
+                      borderRadius: '2px',
+                      animation: 'slideIn 0.3s ease-out forwards, glow 2s ease-in-out infinite',
+                      boxShadow: '0 0 8px rgba(37, 99, 235, 0.5)' // EFEITO GLOW
                     }}
                   />
                 )}
@@ -327,7 +333,7 @@ function ProjectsPage() {
               opacity: isTransitioning ? 0.7 : 1 // FEEDBACK VISUAL DURANTE TRANSIÇÃO
             }}
           >
-            {/* PROJECT CARD - AGORA COM PROPORÇÃO 4:3 FIXA */}
+            {/* PROJECT CARD - AGORA COM PROPORÇÃO 4:3 FIXA E MELHORIAS AZUIS */}
             {filteredProjects.map(
               (project: ProjectType, index: number) =>
                 project.filter.includes(selectedFilter) && (
@@ -347,30 +353,33 @@ function ProjectsPage() {
                       maxWidth: getCardWidth(), // MAX-WIDTH TAMBÉM 4:3
                       borderRadius: '12px',
                       overflow: 'hidden',
-                      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(37, 99, 235, 0.2)', // BORDA AZUL SUTIL
                       transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)', // TRANSIÇÃO MAIS SUAVE
                       background: '#2a2a2a',
+                      border: '1px solid rgba(37, 99, 235, 0.3)', // BORDA AZUL MAIS VISÍVEL
                       animation: 'cardFadeIn 0.6s ease-out forwards', // ANIMAÇÃO DE ENTRADA
                       animationDelay: `${index * 0.1}s` // DELAY ESCALONADO BASEADO NO INDEX
                     }}
                     onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
                       e.currentTarget.style.transform = 'translateY(-8px)';
-                      e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.3)';
+                      e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(37, 99, 235, 0.3)'; // GLOW AZUL NO HOVER
+                      e.currentTarget.style.borderColor = 'rgba(37, 99, 235, 0.6)'; // BORDA AZUL MAIS INTENSA NO HOVER
                     }}
                     onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
                       e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+                      e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(37, 99, 235, 0.2)';
+                      e.currentTarget.style.borderColor = 'rgba(37, 99, 235, 0.3)'; // VOLTA PARA BORDA AZUL NORMAL
                     }}
                   >
                     {/* PROJECT IMAGE THUMBNAIL ou PLACEHOLDER */}
                     {project.thumbnail.includes('placeholder') ? (
-                      // Placeholder "Em Construção" - MELHORADO
+                      // Placeholder "Em Construção" - MELHORADO COM AZUL
                       <div
                         data-hover
                         style={{
                           width: '100%',
                           height: '100%',
-                          background: 'linear-gradient(135deg, #00A19A 0%, #008B85 50%, #007A74 100%)', // NOVA COR
+                          background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%)', // GRADIENTE AZUL
                           display: 'flex',
                           flexDirection: 'column',
                           alignItems: 'center',
@@ -396,6 +405,17 @@ function ProjectsPage() {
                           `,
                           backgroundSize: '40px 40px',
                           opacity: 0.3
+                        }} />
+                        
+                        {/* Shimmer effect */}
+                        <div style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: '-100%',
+                          width: '100%',
+                          height: '100%',
+                          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)',
+                          animation: 'shimmer 3s ease-in-out infinite'
                         }} />
                         
                         {/* Ícone SVG do projeto */}
@@ -447,7 +467,7 @@ function ProjectsPage() {
                           </div>
                         </div>
 
-                        {/* Barra de progresso decorativa */}
+                        {/* Barra de progresso decorativa - AZUL */}
                         <div style={{
                           width: '80%',
                           height: '3px',
@@ -517,7 +537,7 @@ function ProjectsPage() {
                       />
                     )}
 
-                    {/* OVERLAY CONTENT - MELHORADO APENAS A ORGANIZAÇÃO */}
+                    {/* OVERLAY CONTENT - MELHORADO COM DETALHES AZUIS */}
                     <div
                       data-hover
                       className="content-slate group-hover:opacity-100"
@@ -527,7 +547,7 @@ function ProjectsPage() {
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        background: 'rgba(0, 0, 0, 0.85)',
+                        background: 'rgba(0, 0, 0, 0.9)', // Background mais opaco
                         backdropFilter: 'blur(10px)',
                         opacity: 0,
                         transition: 'opacity 0.4s ease-in-out',
@@ -536,7 +556,8 @@ function ProjectsPage() {
                         justifyContent: 'space-between',
                         alignItems: 'center',
                         padding: '1.5rem',
-                        textAlign: 'center'
+                        textAlign: 'center',
+                        border: '1px solid rgba(37, 99, 235, 0.3)' // BORDA AZUL NO OVERLAY
                       }}
                       onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
                         e.currentTarget.style.opacity = '1';
@@ -554,11 +575,17 @@ function ProjectsPage() {
                         justifyContent: 'center',
                         width: '100%'
                       }}>
-                        {/* PROJECT TITLE */}
+                        {/* PROJECT TITLE - COM DESTAQUE AZUL */}
                         <h3
                           data-hover
-                          className="text-xl md:text-2xl font-bold text-center text-white mb-2"
-                          style={{ lineHeight: '1.2' }}
+                          className="text-xl md:text-2xl font-bold text-center mb-2"
+                          style={{ 
+                            lineHeight: '1.2',
+                            background: 'linear-gradient(135deg, #ffffff 0%, #2563eb 100%)', // GRADIENTE AZUL NO TÍTULO
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text'
+                          }}
                         >
                           {project.title}
                         </h3>
@@ -574,7 +601,8 @@ function ProjectsPage() {
                             display: '-webkit-box',
                             WebkitBoxOrient: 'vertical',
                             WebkitLineClamp: 4, // Mais linhas
-                            marginBottom: '1rem'
+                            marginBottom: '1rem',
+                            color: '#e2e8f0' // Texto mais claro
                           }}
                         >
                           {project.about}
@@ -589,7 +617,7 @@ function ProjectsPage() {
                         width: '100%',
                         gap: '1rem'
                       }}>
-                        {/* GITHUB AND DEMO LINKS */}
+                        {/* GITHUB AND DEMO LINKS - COM EFEITOS AZUIS */}
                         <div
                           data-hover
                           className="flex gap-4 justify-center"
@@ -604,7 +632,19 @@ function ProjectsPage() {
                               <div className="flex flex-col items-center group/item">
                                 <BsGithub
                                   size={30}
-                                  className="text-white transition-transform group-hover/item:-translate-y-1 cursor-pointer"
+                                  className="text-white transition-all group-hover/item:-translate-y-1 cursor-pointer"
+                                  style={{
+                                    filter: 'drop-shadow(0 0 8px rgba(37, 99, 235, 0.3))', // GLOW AZUL NOS ÍCONES
+                                    transition: 'all 0.3s ease'
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.color = '#2563eb';
+                                    e.currentTarget.style.filter = 'drop-shadow(0 0 12px rgba(37, 99, 235, 0.6))';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.color = '#ffffff';
+                                    e.currentTarget.style.filter = 'drop-shadow(0 0 8px rgba(37, 99, 235, 0.3))';
+                                  }}
                                 />
                                 <span className="text-white" style={{ fontSize: '0.875rem' }}>GitHub</span>
                               </div>
@@ -621,7 +661,19 @@ function ProjectsPage() {
                               <div className="flex flex-col items-center group/item">
                                 <BsArrowUpRightSquare
                                   size={30}
-                                  className="text-white transition-transform group-hover/item:-translate-y-1 cursor-pointer"
+                                  className="text-white transition-all group-hover/item:-translate-y-1 cursor-pointer"
+                                  style={{
+                                    filter: 'drop-shadow(0 0 8px rgba(37, 99, 235, 0.3))', // GLOW AZUL NOS ÍCONES
+                                    transition: 'all 0.3s ease'
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.color = '#2563eb';
+                                    e.currentTarget.style.filter = 'drop-shadow(0 0 12px rgba(37, 99, 235, 0.6))';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.color = '#ffffff';
+                                    e.currentTarget.style.filter = 'drop-shadow(0 0 8px rgba(37, 99, 235, 0.3))';
+                                  }}
                                 />
                                 <span className="text-white" style={{ fontSize: '0.875rem' }}>Live Demo</span>
                               </div>
@@ -636,7 +688,7 @@ function ProjectsPage() {
                           )}
                         </div>
 
-                        {/* TECHNOLOGIES - ABAIXO DOS ÍCONES */}
+                        {/* TECHNOLOGIES - ABAIXO DOS ÍCONES COM TOQUE AZUL */}
                         {project.tech && (
                           <div
                             data-hover
@@ -648,8 +700,9 @@ function ProjectsPage() {
                                 key={index}
                                 className="px-2 py-1 rounded-xl text-xs text-white"
                                 style={{
-                                  background: 'rgba(75, 85, 99, 0.8)',
-                                  fontSize: '0.75rem'
+                                  background: 'rgba(37, 99, 235, 0.2)', // BACKGROUND AZUL SUTIL
+                                  fontSize: '0.75rem',
+                                  border: '1px solid rgba(37, 99, 235, 0.3)' // BORDA AZUL
                                 }}
                               >
                                 {item}
@@ -659,8 +712,9 @@ function ProjectsPage() {
                               <p
                                 className="px-2 py-1 rounded-xl text-xs text-white"
                                 style={{
-                                  background: 'rgba(75, 85, 99, 0.8)',
-                                  fontSize: '0.75rem'
+                                  background: 'rgba(37, 99, 235, 0.3)', // BACKGROUND AZUL MAIS FORTE PARA O +N
+                                  fontSize: '0.75rem',
+                                  border: '1px solid rgba(37, 99, 235, 0.4)'
                                 }}
                               >
                                 +{project.tech.length - 4}

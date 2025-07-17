@@ -59,9 +59,10 @@ const Experiencia = () => {
 
   const getExperienceItemHoverStyles = () => (
     isTouchDevice ? {} : {
-      borderLeft: '3px solid #3b82f6',
+      borderLeft: '3px solid #2563eb', // Mudei para o azul padrão
       paddingLeft: '1rem',
       transform: 'translateX(5px)',
+      backgroundColor: 'rgba(37, 99, 235, 0.05)' // Sutil background azul no hover
     }
   );
 
@@ -70,14 +71,16 @@ const Experiencia = () => {
       borderLeft: 'none',
       paddingLeft: '0',
       transform: 'translateX(0)',
+      backgroundColor: 'transparent'
     }
   );
 
   const getEducationItemHoverStyles = () => (
     isTouchDevice ? {} : {
-      borderLeft: '3px solid #10b981',
+      borderLeft: '3px solid #2563eb', // Também mudei para azul para consistência
       paddingLeft: '1rem',
       transform: 'translateX(5px)',
+      backgroundColor: 'rgba(37, 99, 235, 0.05)'
     }
   );
 
@@ -86,12 +89,13 @@ const Experiencia = () => {
       borderLeft: 'none',
       paddingLeft: '0',
       transform: 'translateX(0)',
+      backgroundColor: 'transparent'
     }
   );
 
   const styles: { [key: string]: CSSProperties } = {
     section: {
-      backgroundColor: '#191919',
+      backgroundColor: '#000000', // Fundo preto mantido
       padding: '4rem 0',
       fontFamily: "'Poppins', sans-serif"
     },
@@ -103,7 +107,6 @@ const Experiencia = () => {
     sectionTitle: {
       fontSize: getResponsiveFontSize(3, 0.7),
       fontWeight: '700',
-      color: '#ffffff',
       textAlign: 'center',
       marginBottom: '3rem',
       fontFamily: "'Montserrat', sans-serif",
@@ -115,7 +118,7 @@ const Experiencia = () => {
       margin: '0 auto',
       padding: '1rem'
     },
-    // Card com bordas modernas e efeito glow sutil
+    // Card com bordas modernas e efeito glow sutil azul
     blackCard: {
       background: 'linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%)',
       borderTopLeftRadius: '20px',
@@ -123,19 +126,19 @@ const Experiencia = () => {
       borderTopRightRadius: '50px',
       borderBottomLeftRadius: '50px',
       padding: getContentPadding(),
-      boxShadow: '0 25px 50px rgba(0, 0, 0, 0.6)',
+      boxShadow: '0 25px 50px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(37, 99, 235, 0.1)', // Sutil borda azul
       position: 'relative',
       zIndex: 10,
-      border: '1px solid rgba(255, 255, 255, 0.15)',
+      border: '1px solid rgba(37, 99, 235, 0.2)', // Borda azul sutil
     },
-    // Card branco com borda sutil também
+    // Card branco com sutil toque azul
     whiteCard: {
       position: 'absolute',
       bottom: '-20px',
       right: '-20px',
       width: '60%',
       height: '80%',
-      background: '#ffffff',
+      background: 'linear-gradient(135deg, #ffffff 0%, #f8faff 100%)', // Sutil toque azul no branco
       borderTopLeftRadius: '20px',
       borderBottomRightRadius: '20px',
       borderTopRightRadius: '50px',
@@ -143,14 +146,14 @@ const Experiencia = () => {
       zIndex: 1,
       display: isMobile ? 'none' : 'block',
     },
-    // Card de fundo com efeito mais sutil
+    // Card de fundo com tom azul escuro
     backgroundCard: {
       position: 'absolute',
       bottom: '-30px',
       right: '-30px',
       width: '65%',
       height: '85%',
-      background: '#6b7280',
+      background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)', // Gradiente azul
       borderTopLeftRadius: '20px',
       borderBottomRightRadius: '20px',
       borderTopRightRadius: '50px',
@@ -196,10 +199,10 @@ const Experiencia = () => {
     },
     experienceItem: {
       background: 'transparent',
-      borderRadius: '0px',
-      padding: '1rem 0',
+      borderRadius: '8px', // Bordas mais suaves
+      padding: '1rem',
       border: 'none',
-      borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+      borderBottom: '1px solid rgba(37, 99, 235, 0.2)', // Linha azul sutil
       transition: isTouchDevice ? 'none' : 'all 0.3s ease',
       cursor: isTouchDevice ? 'default' : 'pointer'
     },
@@ -223,12 +226,12 @@ const Experiencia = () => {
       alignItems: 'center',
       gap: '0.4rem'
     },
-    // Box de resumo com bordas modernas também
+    // Box de resumo com toque azul
     summaryBox: {
-      background: 'rgba(255, 255, 255, 0.08)',
+      background: 'rgba(37, 99, 235, 0.08)', // Background azul muito sutil
       borderRadius: '12px',
       padding: isMobile ? '1rem' : '1.5rem',
-      border: '1px solid rgba(255, 255, 255, 0.15)'
+      border: '1px solid rgba(37, 99, 235, 0.25)' // Borda azul
     },
     summaryText: {
       fontSize: getResponsiveFontSize(0.85, 0.9),
@@ -240,7 +243,7 @@ const Experiencia = () => {
       display: 'flex',
       justifyContent: 'space-around',
       paddingTop: '1rem',
-      borderTop: '1px solid rgba(255, 255, 255, 0.15)'
+      borderTop: '1px solid rgba(37, 99, 235, 0.25)' // Linha azul
     },
     statItem: {
       textAlign: 'center'
@@ -248,7 +251,7 @@ const Experiencia = () => {
     statNumber: {
       fontSize: getResponsiveFontSize(1.4, 0.9),
       fontWeight: '700',
-      color: '#ffffff',
+      color: '#2563eb', // Números em azul!
       display: 'block'
     },
     statLabel: {
@@ -266,10 +269,14 @@ const Experiencia = () => {
     <section style={styles.section} id="experiencia">
       <div style={styles.container}>
         <h2 style={styles.sectionTitle}>
-          Experiência & Formação
+          <span style={{ color: '#ffffff' }}>Experiência</span>
+          <span style={{ color: '#2563eb' }}> & Formação</span>
         </h2>
 
         <div style={styles.mainCard}>
+          {/* Card de fundo azul - Oculto em mobile */}
+          <div style={styles.backgroundCard} />
+          
           {/* Card Branco Decorativo - Oculto em mobile */}
           <div style={styles.whiteCard} />
 
@@ -280,7 +287,7 @@ const Experiencia = () => {
               {/* Coluna Esquerda - Experiências */}
               <div style={styles.leftColumn}>
                 <div style={styles.sectionHeader}>
-                  <FaBriefcase style={{ ...styles.icon, color: '#3b82f6' }} />
+                  <FaBriefcase style={{ ...styles.icon, color: '#2563eb' }} />
                   <h3 style={styles.sectionTitleInCard}>
                     Experiência Profissional
                   </h3>
@@ -378,7 +385,7 @@ const Experiencia = () => {
                 {/* Formação */}
                 <div>
                   <div style={styles.sectionHeader}>
-                    <FaGraduationCap style={{ ...styles.icon, color: '#10b981' }} />
+                    <FaGraduationCap style={{ ...styles.icon, color: '#2563eb' }} />
                     <h4 style={styles.sectionTitleInCard}>
                       Formação Acadêmica
                     </h4>
@@ -432,7 +439,7 @@ const Experiencia = () => {
                 {/* Resumo */}
                 <div style={styles.summaryBox}>
                   <div style={styles.sectionHeader}>
-                    <FaTrophy style={{ ...styles.icon, color: '#f59e0b' }} />
+                    <FaTrophy style={{ ...styles.icon, color: '#2563eb' }} />
                     <h4 style={styles.sectionTitleInCard}>
                       Resumo
                     </h4>
