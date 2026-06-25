@@ -1,6 +1,4 @@
-﻿'use client'
-
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 
 export function useScroll() {
   const [scrolled, setScrolled] = useState(false)

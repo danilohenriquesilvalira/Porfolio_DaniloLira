@@ -1,4 +1,4 @@
-﻿export interface ProjectType {
+export interface ProjectType {
   id: number;
   title: string;
   about: string;
@@ -10,67 +10,97 @@
 }
 
 export const projects: ProjectType[] = [
-  // PROJETOS REAIS - PRIMEIROS
+  // ── PROJETOS DE DESTAQUE (trabalho real) ──────────────────────────────────
+
   {
     id: 1,
-    title: "Sistema Radar Industrial SICK RMS1000",
-    about: "Desenvolvi um sistema completo que integra o radar SICK RMS1000 com PLCs Siemens S7 e uma interface web para monitoramento em tempo real. Esta solução permite a configuração dinâmica de áreas de detecção baseadas em amplitude do sinal do radar, essencial para o controle de acesso e segurança em ambientes como eclusas. A comunicação utiliza Go e NATS para o backend, WebSocket para a transmissão de dados em tempo real para o frontend em React/TypeScript, e Tailwind para a estilização. O sistema oferece visualização precisa e gerenciamento flexível, garantindo operações automatizadas seguras e eficientes.",
-    tech: ["Go", "NATS", "WebSocket", "React", "TypeScript", "Tailwind", "SVG/Figma", "Siemens S7"],
-    filter: ["All", "Automação", "Front-end"],
+    title: "Telecomando & Telegestão de 5 Eclusas — EDP",
+    about:
+      "Projeto em produção para a EDP que interliga 5 eclusas a uma sala de telecomando centralizada. Cada eclusa possui um PLC Siemens S7-1500 redundante a comunicar por IEC 60870-5-104 com o WinCC. A infraestrutura de rede é protegida por switches, gateways e firewall Fortinet com VLANs isoladas para o tráfego crítico. A sala de comando assenta num cluster VMware ESXi (Windows Server 2022 / Linux) com 6 VMs e scripts VBS que permitem a qualquer posto operar qualquer eclusa em segurança.",
+    tech: ["Siemens S7-1500", "TIA Portal", "WinCC", "IEC 60870-5-104", "VMware ESXi", "Fortinet", "VLANs", "Windows Server 2022"],
+    filter: ["All", "Automação", "IT/OT"],
     thumbnail: "/images/Projeto_Radar.svg",
-    github: "https://github.com/danilohenriquesilvalira/RADAR_COLETAS",
-    link: null
+    github: "#",
+    link: null,
   },
   {
     id: 2,
-    title: "Multi-PLC Communication System TCP/IP",
-    about: "Implementei um sistema de comunicação TCP/IP de alta performance para múltiplos PLCs Siemens, utilizando as instruções nativas TSEND_C e TRCV_C no TIA Portal, programadas em SCL (Structured Control Language). Este sistema é projetado para assegurar a troca de sinais e dados críticos em tempo real, com funcionalidades robustas de controle de erro e recuperação automática. Essencial para arquiteturas de automação distribuídas, ele garante a sincronização e coordenação perfeita entre diferentes controladores, fundamentais para processos industriais complexos e de grande escala.",
-    tech: ["STEP 7", "TIA Portal", "SCL", "TSEND_C/TRCV_C", "TCP/IP", "PROFINET", "S7-1500", "HMI"],
+    title: "Manutenção Preditiva de Transportadores — AmBev",
+    about:
+      "Sistema de manutenção condicionada premiado pela AmBev e reconhecido internacionalmente na Stella Artois (Bélgica). Coleta dados do PLC Siemens S7-1500 e variadores Danfoss FC 300 para medir a distância percorrida (km) de cada motor e cruzá-la em tempo real com corrente e binário. O plano de manutenção passa a ajustar-se automaticamente às condições reais, antecipando avarias e reduzindo travamentos inesperados sem impacto no OEE.",
+    tech: ["Siemens S7-1500", "TIA Portal", "Danfoss FC 300", "Python", "MySQL", "Grafana", "OEE"],
     filter: ["All", "Automação"],
     thumbnail: "/images/Projeto_Send_Receive.svg",
-    github: "https://github.com/DaniloHenriqueLira/Automacao",
-    link: null
+    github: "#",
+    link: null,
   },
   {
     id: 3,
-    title: "API REST Go para Controle PLC",
-    about: "Desenvolvi uma API RESTful em Go, utilizando o framework Gin, para estabelecer uma comunicação direta e segura com PLCs Siemens. Esta API oferece endpoints para leitura e escrita de variáveis do PLC (Tags) em tempo real, permitindo a integração fluida com sistemas SCADA, MES e outras aplicações empresariais. A arquitetura inclui persistência de dados com GORM, serialização JSON e empacotamento via Docker, facilitando o deployment e a escalabilidade. É uma solução robusta para modernizar a conectividade entre o chão de fábrica e os sistemas de gestão.",
-    tech: ["Go", "Gin", "REST API", "JSON", "Siemens S7", "TCP/IP", "GORM", "Docker"],
-    filter: ["All", "Backend", "Automação"],
-    thumbnail: "/images/Projeto_API_GO.svg",
-    github: "https://github.com/danilohenriquesilvalira/Projeto_PLC",
-    link: null
+    title: "Visão Artificial na Rotuladora — Raspberry Pi",
+    about:
+      "Sistema de inspeção visual de alta velocidade desenvolvido com Raspberry Pi e câmara, programado em Python com OpenCV, para detetar garrafas sem rótulo ou com rótulo desalinhado. Integrado com registo de deslocamento (shift register / FIFO) para seguir cada garrafa na linha e garantir rejeição precisa no transporte de saída, reforçando a qualidade e segurança alimentar na FontSalem (Grupo Damm).",
+    tech: ["Python", "OpenCV", "Raspberry Pi", "Shift Register", "FIFO", "Visão Computacional"],
+    filter: ["All", "Automação"],
+    thumbnail: "/images/Projeto_Smart-Person-Detection-PLC.svg",
+    github: "#",
+    link: null,
   },
   {
     id: 4,
-    title: "Smart Person Detection PLC",
-    about: "Este projeto inovador combina visão computacional com automação industrial para aprimorar drasticamente a segurança em ambientes com máquinas. Utilizando Python, OpenCV e o modelo YOLOv5 para detecção precisa de pessoas, o sistema processa imagens de câmeras em tempo real. Ao detectar a presença humana em áreas restritas, ele envia sinais binários (bits) diretamente para um PLC Siemens, que pode então acionar rapidamente medidas de segurança, como a paralisação imediata de equipamentos. A solução inclui a capacidade de registrar snapshots dos eventos de detecção, fornecendo dados visuais importantes para auditorias e análises. É uma aplicação prática de IA na segurança industrial, prevenindo acidentes e otimizando a interação homem-máquina.",
-    tech: ["Python", "YOLOv5", "OpenCV", "Visão Computacional", "Siemens S7", "Automação", "Segurança Industrial"],
-    filter: ["All", "Automação", "Backend"],
-    thumbnail: "/images/Projeto_Smart-Person-Detection-PLC.svg",
-    github: "https://github.com/danilohenriquesilvalira/-Smart-Person-Detection-PLC",
-    link: null
+    title: "Sistema Auto Flush na Enchedora — FontSalem",
+    about:
+      "Recuperação de função de segurança alimentar parada há anos numa enchedora KHS, sem deteção inteligente de ciclo. Foi criado um encoder virtual do eixo cardan com sensores adicionais para identificar com precisão a válvula onde rebentou a garrafa. O sistema interrompe o enchimento e lava a válvula afetada e as 2 adjacentes nos ciclos seguintes, rejeitando as garrafas no inspetor Checkmat. Contaminação eliminada e segurança alimentar reforçada.",
+    tech: ["Siemens TIA Portal", "SCL", "Encoder Virtual", "KHS", "Checkmat", "Segurança Alimentar"],
+    filter: ["All", "Automação"],
+    thumbnail: "/images/Projeto_Desenvolvimento.svg",
+    github: "#",
+    link: null,
   },
-
-  // PROJETOS EM CONSTRUÇÃO - DEPOIS DOS REAIS
   {
     id: 5,
-    title: "Dashboard IoT Indústria 4.0",
-    about: "Em desenvolvimento: Uma plataforma web robusta para a Indústria 4.0, focada na visualização e análise de dados em tempo real de sensores IoT. Este dashboard permitirá o monitoramento detalhado do desempenho de ativos, o recebimento de alertas preditivos e a geração de relatórios customizáveis. Utilizando React para o frontend, Node.js para o backend, e MongoDB, InfluxDB e Grafana para gestão e visualização de dados, a plataforma visa otimizar processos de manufatura, identificar gargalos e apoiar a tomada de decisões estratégicas em tempo real.",
-    tech: ["React", "Node.js", "MongoDB", "MQTT", "InfluxDB", "Grafana"],
-    filter: ["All", "IoT", "Web Development"],
-    thumbnail: "/images/Projeto_Desenvolvimento.svg",
+    title: "Sistema de Desalcoolização Cervejeira — Ambev",
+    about:
+      "Projeto chave-na-mão de automação do processo de desalcoolização cervejeira para a Ambev Pernambuco. Da especificação técnica ao comissionamento e arranque (FAT/SAT): programação PLC (TIA Portal / RSLogix) para controlo preciso de temperatura, pressão, caudal e tempo de residência; supervisório iFIX integrado na arquitetura corporativa da Ambev; calibração de instrumentação e validação de receitas.",
+    tech: ["TIA Portal", "RSLogix", "iFIX", "Modbus TCP", "Calibração", "FAT/SAT", "P&ID"],
+    filter: ["All", "Automação"],
+    thumbnail: "/images/Projeto_API_GO.svg",
     github: "#",
-    link: "#"
+    link: null,
   },
+
+  // ── PROJETOS DE CÓDIGO (repositórios GitHub) ──────────────────────────────
+
   {
     id: 6,
-    title: "App Mobile Manutenção Industrial",
-    about: "Em desenvolvimento: Um aplicativo mobile nativo (React Native) para otimizar a gestão da manutenção industrial. Ele permitirá que equipes de campo registrem e acompanhem ordens de serviço (preventivas e corretivas) com agilidade, recebam notificações push sobre eventos críticos de equipamentos e acessem manuais técnicos. Integrado com Firebase para backend e dados, este app visa digitalizar e simplificar os fluxos de trabalho da manutenção, reduzindo o tempo de inatividade e aumentando a eficiência operacional.",
-    tech: ["React Native", "Firebase", "TypeScript", "Push Notifications"],
-    filter: ["All", "Mobile"],
-    thumbnail: "/images/Projeto_Desenvolvimento.svg",
-    github: "#",
-    link: "#"
+    title: "API REST Go para Controlo de PLC Siemens",
+    about:
+      "API RESTful em Go (Gin framework) para comunicação direta com PLCs Siemens via protocolo S7. Endpoints para leitura e escrita de variáveis em tempo real, permitindo integração com SCADA, MES e aplicações web. Inclui persistência com GORM, serialização JSON e containerização via Docker para deployment industrial simplificado.",
+    tech: ["Go", "Gin", "REST API", "Siemens S7", "GORM", "Docker", "JSON"],
+    filter: ["All", "Backend", "Automação"],
+    thumbnail: "/images/Projeto_API_GO.svg",
+    github: "https://github.com/danilohenriquesilvalira/Projeto_PLC",
+    link: null,
+  },
+  {
+    id: 7,
+    title: "Sistema Radar Industrial SICK RMS1000",
+    about:
+      "Sistema que integra radar SICK RMS1000 com PLCs Siemens S7 e interface web para monitoramento em tempo real. Permite configuração dinâmica de áreas de detecção por amplitude de sinal, essencial para controlo de acesso em eclusas. Backend em Go com NATS e WebSocket; frontend React/TypeScript com visualização SVG em tempo real.",
+    tech: ["Go", "NATS", "WebSocket", "React", "TypeScript", "Tailwind", "Siemens S7"],
+    filter: ["All", "IT/OT", "Automação"],
+    thumbnail: "/images/Projeto_Radar.svg",
+    github: "https://github.com/danilohenriquesilvalira/RADAR_COLETAS",
+    link: null,
+  },
+  {
+    id: 8,
+    title: "Smart Person Detection — Segurança Industrial",
+    about:
+      "Sistema de visão computacional para segurança em ambientes com máquinas: deteção de pessoas com Python, OpenCV e YOLOv5, com envio de sinais binários direto para PLC Siemens em caso de intrusão em zona proibida. O PLC aciona paragem imediata do equipamento. Registo de snapshots para auditoria e análise pós-evento.",
+    tech: ["Python", "YOLOv5", "OpenCV", "Siemens S7", "Visão Computacional", "Segurança Industrial"],
+    filter: ["All", "Backend", "Automação"],
+    thumbnail: "/images/Projeto_Smart-Person-Detection-PLC.svg",
+    github: "https://github.com/danilohenriquesilvalira/-Smart-Person-Detection-PLC",
+    link: null,
   },
 ];

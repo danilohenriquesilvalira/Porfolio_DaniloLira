@@ -13,6 +13,11 @@ export function formatDate(date: Date): string {
   }).format(date)
 }
 
+/** Resolves a public-folder asset path against Vite's configured base (needed for GitHub Pages subpath deploys). */
+export function asset(path: string): string {
+  return `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`
+}
+
 export function slugify(text: string): string {
   return text
     .toLowerCase()

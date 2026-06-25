@@ -1,104 +1,48 @@
-'use client';
-
-import {
-  FaGithub,
-  FaLinkedinIn,
-  FaEnvelope,
-} from "react-icons/fa";
+import { FaGithub, FaLinkedinIn, FaEnvelope, FaWhatsapp } from "react-icons/fa";
 
 function Footer() {
-  const currentYear = new Date().getFullYear();
+  const year = new Date().getFullYear();
 
   return (
-    <footer className="w-full py-12" style={{ backgroundColor: '#000000' }}>
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        
-        {/* Separator Line - Agora em azul */}
-        <hr className="my-8" style={{ borderColor: 'rgba(37, 99, 235, 0.3)' }} />
+    <footer className="bg-slate-900 text-slate-400">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
 
-        <div className="flex flex-col items-center justify-between gap-6 md:flex-row mt-8">
-          
-          {/* Copyright & Core Info */}
-          <div className="text-center md:text-left">
-            <p className="text-sm" style={{ color: '#d1d5db' }}>
-              &copy; {currentYear} <span style={{ color: '#2563eb', fontWeight: '600' }}>Danilo Lira</span>. Especialista em Automação Industrial.
+          {/* Left */}
+          <div className="text-center sm:text-left">
+            <p className="text-sm text-slate-300">
+              &copy; {year}{' '}
+              <span className="font-semibold text-white">Danilo Lira</span>
+              {' — '}
+              Automação Industrial & IT/OT
             </p>
-            <p className="text-xs mt-1" style={{ color: '#9ca3af' }}>
-              Transformando a indústria com <span style={{ color: '#2563eb' }}>tecnologia</span> em Portugal 🇵🇹.
+            <p className="text-xs text-slate-500 mt-1">
+              Sintra, Portugal · Disponível para projetos industriais e IT/OT
             </p>
           </div>
 
-          {/* Social Links & Call to Connect */}
-          <div className="flex items-center space-x-6">
-            <span className="text-sm hidden sm:block" style={{ color: '#9ca3af' }}>
-              Vamos nos <span style={{ color: '#2563eb' }}>conectar</span>:
-            </span>
-            
-            <a
-              href="https://github.com/danilohenriquesilvalira"
-              rel="noreferrer"
-              target="_blank"
-              aria-label="GitHub"
-              className="transition-all duration-300 transform hover:scale-110 p-2 rounded-lg"
-              style={{ 
-                color: '#d1d5db',
-                backgroundColor: 'transparent'
-              }}
-              onMouseEnter={(e) => {
-                (e.target as HTMLElement).style.color = '#2563eb';
-                (e.target as HTMLElement).style.backgroundColor = 'rgba(37, 99, 235, 0.1)';
-              }}
-              onMouseLeave={(e) => {
-                (e.target as HTMLElement).style.color = '#d1d5db';
-                (e.target as HTMLElement).style.backgroundColor = 'transparent';
-              }}
-            >
-              <FaGithub size={20} />
-            </a>
-
-            <a
-              href="https://www.linkedin.com/in/danilo-lira-82b17516b"
-              rel="noreferrer"
-              target="_blank"
-              aria-label="LinkedIn"
-              className="transition-all duration-300 transform hover:scale-110 p-2 rounded-lg"
-              style={{ 
-                color: '#d1d5db',
-                backgroundColor: 'transparent'
-              }}
-              onMouseEnter={(e) => {
-                (e.target as HTMLElement).style.color = '#2563eb';
-                (e.target as HTMLElement).style.backgroundColor = 'rgba(37, 99, 235, 0.1)';
-              }}
-              onMouseLeave={(e) => {
-                (e.target as HTMLElement).style.color = '#d1d5db';
-                (e.target as HTMLElement).style.backgroundColor = 'transparent';
-              }}
-            >
-              <FaLinkedinIn size={20} />
-            </a>
-
-            <a
-              href="mailto:danilosilvalira@hotmail.com"
-              rel="noreferrer"
-              aria-label="Email"
-              className="transition-all duration-300 transform hover:scale-110 p-2 rounded-lg"
-              style={{ 
-                color: '#d1d5db',
-                backgroundColor: 'transparent'
-              }}
-              onMouseEnter={(e) => {
-                (e.target as HTMLElement).style.color = '#2563eb';
-                (e.target as HTMLElement).style.backgroundColor = 'rgba(37, 99, 235, 0.1)';
-              }}
-              onMouseLeave={(e) => {
-                (e.target as HTMLElement).style.color = '#d1d5db';
-                (e.target as HTMLElement).style.backgroundColor = 'transparent';
-              }}
-            >
-              <FaEnvelope size={20} />
-            </a>
+          {/* Right: Social */}
+          <div className="flex items-center gap-2">
+            {[
+              { href: 'https://github.com/danilohenriquesilvalira', icon: <FaGithub size={17} />, label: 'GitHub' },
+              { href: 'https://www.linkedin.com/in/danilo-lira-82b17516b', icon: <FaLinkedinIn size={17} />, label: 'LinkedIn' },
+              { href: 'mailto:danilosilvalira@hotmail.com', icon: <FaEnvelope size={17} />, label: 'Email' },
+              { href: 'https://wa.me/351935479757', icon: <FaWhatsapp size={17} />, label: 'WhatsApp' },
+            ].map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target={s.href.startsWith('http') ? '_blank' : undefined}
+                rel="noopener noreferrer"
+                aria-label={s.label}
+                className="w-9 h-9 rounded-lg bg-slate-800 hover:bg-blue-600 text-slate-400 hover:text-white
+                           flex items-center justify-center transition-all duration-200"
+              >
+                {s.icon}
+              </a>
+            ))}
           </div>
+
         </div>
       </div>
     </footer>

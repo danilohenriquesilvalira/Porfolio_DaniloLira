@@ -1,14 +1,10 @@
-'use client';
-
 import { useEffect, useState } from 'react';
 import { FaArrowUp } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import { usePathname } from 'next/navigation';
 
 // Componente para "voltar ao topo" com animações e detecção de scroll
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const pathname = usePathname();
 
   // Manipulador de scroll
   const handleScroll = () => {
@@ -37,11 +33,6 @@ const ScrollToTop = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
-  // Resetar isVisible quando a rota muda
-  useEffect(() => {
-    setIsVisible(false);
-  }, [pathname]);
 
   return (
     <AnimatePresence>

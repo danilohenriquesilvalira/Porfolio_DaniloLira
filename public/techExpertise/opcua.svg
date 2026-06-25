@@ -1,0 +1,14 @@
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="50" cy="44" r="32" stroke="#4A90D9" stroke-width="3.5" fill="none"/>
+  <!-- Network nodes -->
+  <circle cx="50" cy="44" r="6" fill="#4A90D9"/>
+  <circle cx="24" cy="32" r="5" fill="#4A90D9" opacity="0.8"/>
+  <circle cx="76" cy="32" r="5" fill="#4A90D9" opacity="0.8"/>
+  <circle cx="24" cy="56" r="5" fill="#4A90D9" opacity="0.8"/>
+  <circle cx="76" cy="56" r="5" fill="#4A90D9" opacity="0.8"/>
+  <line x1="50" y1="44" x2="24" y2="32" stroke="#4A90D9" stroke-width="2" opacity="0.7"/>
+  <line x1="50" y1="44" x2="76" y2="32" stroke="#4A90D9" stroke-width="2" opacity="0.7"/>
+  <line x1="50" y1="44" x2="24" y2="56" stroke="#4A90D9" stroke-width="2" opacity="0.7"/>
+  <line x1="50" y1="44" x2="76" y2="56" stroke="#4A90D9" stroke-width="2" opacity="0.7"/>
+  <text x="50" y="88" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11" fill="#4A90D9">OPC UA</text>
+</svg>

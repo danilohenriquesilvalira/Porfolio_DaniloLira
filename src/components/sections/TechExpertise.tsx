@@ -1,73 +1,87 @@
-﻿import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { FaLaptopCode } from 'react-icons/fa';
+import { asset } from '@/lib/utils';
+
+const skills = [
+  { name: 'TIA Portal',    icon: '/techExpertise/Tia_portal.svg'  },
+  { name: 'WinCC',         icon: '/techExpertise/wincc.svg'       },
+  { name: 'Ignition',      icon: '/techExpertise/ignition.svg'    },
+  { name: 'Rockwell',      icon: '/techExpertise/Rockewell.svg'   },
+  { name: 'OPC UA',        icon: '/techExpertise/opcua.svg'       },
+  { name: 'Python',        icon: '/techExpertise/python.svg'      },
+  { name: 'Go',            icon: '/techExpertise/go.svg'          },
+  { name: 'Rust',          icon: '/techExpertise/rust.svg'        },
+  { name: 'TypeScript',    icon: '/techExpertise/typescript.svg'  },
+  { name: 'React',         icon: '/techExpertise/react.svg'       },
+  { name: 'JavaScript',    icon: '/techExpertise/javascript.svg'  },
+  { name: 'Node-RED',      icon: '/techExpertise/node-red.svg'    },
+  { name: 'PostgreSQL',    icon: '/techExpertise/postgresql.svg'  },
+  { name: 'MySQL',         icon: '/techExpertise/Mysql.svg'       },
+  { name: 'Linux',         icon: '/techExpertise/linux.svg'       },
+  { name: 'GitHub',        icon: '/techExpertise/github.svg'      },
+  { name: 'VS Code',       icon: '/techExpertise/vsclde.svg'      },
+  { name: 'Figma',         icon: '/techExpertise/Figma.svg'       },
+  { name: 'Coda System',   icon: '/techExpertise/codasystem.svg'  },
+];
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1, y: 0,
+    transition: { duration: 0.35, delay: i * 0.05, type: 'tween' as const },
+  }),
+};
 
 const TechExpertise = () => {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  // Array com todas as tecnologias reorganizado para melhor distribuição
-  const technologies = [
-    { name: "TIA Portal", src: "/techExpertise/Tia_portal.svg", color: "#0066cc" },
-    { name: "Rockwell", src: "/techExpertise/Rockewell.svg", color: "#ff6b35" },
-    { name: "CODESYS", src: "/techExpertise/codasystem.svg", color: "#00a86b" },
-    { name: "React", src: "/techExpertise/react.svg", color: "#61dafb" },
-    { name: "TypeScript", src: "/techExpertise/typescript.svg", color: "#3178c6" },
-    { name: "JavaScript", src: "/techExpertise/javascript.svg", color: "#f7df1e" },
-    { name: "Python", src: "/techExpertise/python.svg", color: "#3776ab" },
-    { name: "Figma", src: "/techExpertise/Figma.svg", color: "#f24e1e" },
-    { name: "PostgreSQL", src: "/techExpertise/postgresql.svg", color: "#336791" },
-    { name: "MySQL", src: "/techExpertise/Mysql.svg", color: "#4479a1" },
-    { name: "Go", src: "/techExpertise/go.svg", color: "#00add8" },
-    { name: "Node-RED", src: "/techExpertise/node-red.svg", color: "#8f0000" },
-    { name: "VS Code", src: "/techExpertise/vsclde.svg", color: "#007acc" },
-    { name: "GitHub", src: "/techExpertise/github.svg", color: "#ffffff" }
-  ];
-
   return (
-    <section id="tech-expertise" className="bg-black py-16 font-['Poppins',_sans-serif]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="tech-expertise" className="bg-[#f7f7f7] py-20 lg:py-28">
+      <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
 
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-5xl font-bold mb-4 tracking-[-0.03em]">
-            <span className="text-white">Tech</span>
-            <span className="text-blue-600"> Stack</span>
+        {/* Heading */}
+        <motion.div
+          className="text-center mb-14"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-center text-3xl sm:text-5xl font-bold text-slate-900 mb-4">
+            <FaLaptopCode className="inline-block align-middle text-blue-600 text-[0.85em] mr-3 -mt-1" />
+            Skills &amp; <span className="text-blue-600">Tecnologias</span>
           </h2>
-        </div>
+          <p className="text-slate-500 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+            Ferramentas e tecnologias aplicadas em projetos industriais reais — do chão de fábrica ao servidor.
+          </p>
+        </motion.div>
 
-        {/* Grid de Tecnologias */}
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-y-12 gap-x-6 justify-items-center items-start">
-          {technologies.map((tech, index) => (
-            <div
-              key={index}
-              className="relative flex flex-col items-center justify-center gap-4 cursor-pointer transition-all duration-400 ease-in-out hover:-translate-y-2 hover:scale-105"
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
+        {/* Skills grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 gap-3 sm:gap-4">
+          {skills.map((skill, i) => (
+            <motion.div
+              key={skill.name}
+              custom={i}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              whileHover={{ y: -6, scale: 1.05 }}
+              className="flex flex-col items-center gap-3 p-4 rounded-xl
+                         bg-white border border-slate-100
+                         shadow-[0_2px_8px_rgba(0,0,0,0.06)]
+                         hover:shadow-[0_6px_20px_rgba(37,99,235,0.15)]
+                         hover:border-blue-200 cursor-default
+                         transition-all duration-300"
             >
-              {/* Efeito de brilho */}
-              <div
-                className="absolute top-1/2 left-1/2 w-[120%] h-[120%] rounded-full -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none transition-opacity duration-400 ease-in-out"
-                style={{
-                  background: `radial-gradient(circle, ${tech.color}40 0%, ${tech.color}20 30%, transparent 70%)`,
-                  opacity: hoveredIndex === index ? 0.6 : 0,
-                }}
-              ></div>
-
-              <Image
-                src={tech.src}
-                alt={tech.name}
-                width={70} // Base size
-                height={70} // Base size
-                className="w-[45px] h-[45px] sm:w-[55px] sm:h-[55px] md:w-[65px] md:h-[65px] lg:w-[70px] lg:h-[70px] xl:w-[80px] xl:h-[80px] transition-all duration-400 ease-in-out object-contain drop-shadow-md z-20 group-hover:scale-110 group-hover:brightness-110"
-                style={hoveredIndex === index ? { filter: 'drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3)) brightness(1.1)' } : {}}
-                priority={index < 7} // Carrega as primeiras 7 imagens com prioridade
+              <img
+                src={asset(skill.icon)}
+                alt={skill.name}
+                className="w-10 h-10 object-contain"
+                draggable={false}
               />
-              <p
-                className="font-semibold text-sm sm:text-base text-white text-center leading-tight tracking-wide z-20 transition-colors duration-300 ease-in-out"
-                style={{ color: hoveredIndex === index ? tech.color : '#ffffff' }}
-              >
-                {tech.name}
-              </p>
-            </div>
+              <span className="text-xs font-semibold text-slate-700 text-center leading-tight">
+                {skill.name}
+              </span>
+            </motion.div>
           ))}
         </div>
 

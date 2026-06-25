@@ -1,161 +1,238 @@
-﻿import React, { useState, useEffect } from 'react';
-// import Image from 'next/image'; // Não utilizado, pode ser removido se não for usar em outro lugar
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { motion } from 'framer-motion';
+import { FaLinkedin, FaGithub, FaEnvelope, FaWhatsapp, FaArrowCircleDown } from 'react-icons/fa';
+import Particles from 'react-tsparticles';
+import type { Engine } from 'tsparticles-engine';
+import { loadFull } from 'tsparticles';
+import { asset } from '@/lib/utils';
 
-const HeroSection = () => {
-  const scrollToProjects = () => {
-    const projectsSection = document.getElementById('projects');
-    if (projectsSection) {
-      projectsSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+const NAVBAR_H = 72;
+const TYPING_WORDS = [
+  'Automação Industrial',
+  'Especialista IT/OT',
+  'Integrador PLC & SCADA',
+  'Desenvolvedor Full Stack',
+];
 
-  const [svgContent, setSvgContent] = useState<React.ReactNode | null>(null);
+/* ── Typing animation hook ─────────────────────────────────────── */
+function useTyping(words: string[], speed = 90, del = 55, pause = 1800) {
+  const [text, setText] = useState('');
+  const [idx, setIdx] = useState(0);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    const getRandom = (min: number, max: number) => Math.random() * (max - min) + min;
-    const dots = [];
-    const lines = [];
-    const numDots = 100;
-    const svgWidth = 100;
-    const svgHeight = 100;
-
-    for (let i = 0; i < numDots; i++) {
-      const cx = getRandom(5, svgWidth - 5);
-      const cy = getRandom(5, svgHeight - 5);
-      const r = getRandom(0.3, 0.8);
-      const opacity = getRandom(0.2, 0.6);
-      dots.push({ cx, cy, r, opacity });
+    const current = words[idx];
+    let timer: ReturnType<typeof setTimeout>;
+    if (!deleting && text === current) {
+      timer = setTimeout(() => setDeleting(true), pause);
+    } else if (deleting && text === '') {
+      setDeleting(false);
+      setIdx(i => (i + 1) % words.length);
+    } else {
+      timer = setTimeout(
+        () => setText(prev => deleting ? prev.slice(0, -1) : current.slice(0, prev.length + 1)),
+        deleting ? del : speed
+      );
     }
+    return () => clearTimeout(timer);
+  }, [text, deleting, idx, words, speed, del, pause]);
 
-    const maxDistance = 15;
-    for (let i = 0; i < numDots; i++) {
-      for (let j = i + 1; j < numDots; j++) {
-        const p1 = dots[i];
-        const p2 = dots[j];
-        const distance = Math.sqrt(
-          Math.pow(p2.cx - p1.cx, 2) + Math.pow(p2.cy - p1.cy, 2)
-        );
-        if (distance < maxDistance) {
-          const opacity = getRandom(0.15, 0.4);
-          lines.push({ x1: p1.cx, y1: p1.cy, x2: p2.cx, y2: p2.cy, opacity });
-        }
-      }
-    }
+  return text;
+}
 
-    setSvgContent(
-      <svg
-        className="absolute inset-0 w-full h-full"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-        preserveAspectRatio="xMidYMid slice"
-      >
-        <defs>
-          <filter id="glow">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="1.8" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-
-          <radialGradient id="fadeMask" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-            <stop offset="65%" stopColor="white" />
-            <stop offset="100%" stopColor="black" />
-          </radialGradient>
-
-          <mask id="circleMask">
-            <rect x="0" y="0" width="100%" height="100%" fill="url(#fadeMask)" />
-          </mask>
-        </defs>
-
-        <g mask="url(#circleMask)">
-          {lines.map((line, index) => (
-            <line
-              key={`line-${index}`}
-              x1={line.x1} y1={line.y1}
-              x2={line.x2} y2={line.y2}
-              stroke="#2563EB"
-              strokeWidth="0.25"
-              opacity={line.opacity * 2.8}
-              filter="url(#glow)"
-            />
-          ))}
-
-          {dots.map((dot, index) => (
-            <circle
-              key={`dot-${index}`}
-              cx={dot.cx} cy={dot.cy} r={dot.r * 2}
-              fill="#2563EB"
-              opacity={dot.opacity * 2.5}
-              filter="url(#glow)"
-            />
-          ))}
-        </g>
-      </svg>
-    );
+/* ── Particle background — mesma engine (tsparticles) e mesma config
+       JSON do particles.js usado no portfólio de referência ────── */
+const ParticleBackground = () => {
+  const init = useCallback(async (engine: Engine) => {
+    await loadFull(engine);
   }, []);
 
-  const horizontalPaddingClasses = "px-4 sm:px-6 lg:px-8";
+  return (
+    <Particles
+      className="absolute inset-0"
+      init={init}
+      options={{
+        fullScreen: { enable: false },
+        background: { color: { value: 'transparent' } },
+        fpsLimit: 60,
+        particles: {
+          number: { value: 80, density: { enable: true, area: 800 } },
+          color: { value: '#000000' },
+          shape: { type: 'circle' },
+          opacity: { value: 0.5 },
+          size: { value: { min: 1, max: 5 } },
+          links: { enable: true, distance: 150, color: '#000000', opacity: 0.4, width: 1 },
+          move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, outModes: { default: 'out' } },
+        },
+        interactivity: {
+          events: {
+            onHover: { enable: true, mode: 'repulse' },
+            onClick: { enable: true, mode: 'push' },
+          },
+          modes: {
+            repulse: { distance: 200, duration: 0.4 },
+            push: { quantity: 4 },
+          },
+        },
+        detectRetina: true,
+      }}
+    />
+  );
+};
+
+/* ── 3-D tilt image (replicates tilt.js behaviour) ─────────────── */
+const TiltImage = () => {
+  const ref  = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el   = ref.current!;
+    const rect = el.getBoundingClientRect();
+    const nx   = (e.clientX - rect.left  - rect.width  / 2) / (rect.width  / 2); // -1..1
+    const ny   = (e.clientY - rect.top   - rect.height / 2) / (rect.height / 2); // -1..1
+    setTilt({ x: ny * -20, y: nx * 20 });
+  };
 
   return (
-    // Removido min-h-screen do section principal para dar mais controle
-    // Adicionado h-screen para que o section ocupe 100% da altura da viewport.
-    // Usado items-start para alinhar o conteúdo ao topo, e então controlamos com padding.
-    <section id="home" className="relative h-screen bg-black flex flex-col items-center lg:justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-black opacity-100 z-0"></div>
+    <div
+      ref={ref}
+      className="cursor-pointer"
+      onMouseMove={handleMove}
+      onMouseLeave={() => setTilt({ x: 0, y: 0 })}
+      style={{ perspective: '1000px' }}
+    >
+      <motion.div
+        animate={{ rotateX: tilt.x, rotateY: tilt.y }}
+        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+        className="relative"
+      >
+        {/* floating animation wrapper */}
+        <motion.div
+          animate={{ y: [0, -16, 0] }}
+          transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          {/* outer glow ring */}
+          <div className="absolute -inset-3 rounded-full bg-yellow-400/30 blur-md" />
 
-      {/* Ajustado pt e pb no container principal para mobile, removendo o lg:py-0 que estava resetando */}
-      {/* Usamos pt-[15vh] para um padding superior em porcentagem da viewport height para mobile */}
-      {/* No desktop (lg), voltamos para centralização normal, se necessário */}
-      <div className={`relative z-10 w-full max-w-7xl mx-auto ${horizontalPaddingClasses} pt-[15vh] pb-8 lg:py-0`}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center justify-center">
-
-          {/* Mantido o padding-y-0 para o conteúdo interno do texto, deixando o controle para o container pai */}
-          <div className="flex flex-col justify-center space-y-8 text-center lg:text-left order-2 lg:order-1 pt-0 pb-0 sm:pt-0 sm:pb-0 lg:py-0">
-            <div className="space-y-2">
-              <p className="text-sm sm:text-base md:text-lg font-medium tracking-wider uppercase text-gray-300 animate-fade-in">
-                OLÁ, SOU O DANILO
-              </p>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold leading-tight animate-fade-in animation-delay-200">
-                <span className="block text-white">Especialista</span>
-                <span className="block text-blue-600 bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
-                  Automação
-                </span>
-                <span className="block text-white">Industrial</span>
-              </h1>
-            </div>
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 leading-relaxed max-w-2xl animate-fade-in animation-delay-400">
-              Profissional com mais de 10 anos de experiência em grandes empresas do setor de bebidas.
-              Desenvolvendo soluções de automação e transformando processos industriais para a era da Indústria 4.0.
-            </p>
-            <div className="pt-4 animate-fade-in animation-delay-600">
-              <button
-                onClick={scrollToProjects}
-                className="group relative inline-flex items-center px-8 py-4 font-semibold text-sm sm:text-base uppercase tracking-wide rounded-lg bg-transparent text-white border-2 border-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-black overflow-hidden"
-              >
-                <span className="absolute inset-0 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-                <span className="relative z-10">VEJA MEUS PROJETOS</span>
-                <svg className="relative z-10 ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </button>
-            </div>
+          {/* yellow circle + image — identical to Jigar */}
+          <div
+            className="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-[380px] lg:h-[380px]
+                       rounded-full overflow-hidden select-none
+                       shadow-[0_12px_40px_rgba(0,0,0,0.25)]"
+            style={{ background: 'radial-gradient(circle at 60% 40%, #FFD700, #FFA500)' }}
+          >
+            <img
+              src={asset('/images/Danilo_Herosection.svg')}
+              alt="Danilo Lira"
+              className="w-full h-full object-cover object-top"
+              draggable={false}
+            />
           </div>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+};
 
-          <div className="flex justify-center lg:justify-end items-center order-1 lg:order-2 animate-fade-in animation-delay-800">
-            <div className="relative">
-              {/* Este div contendo svgContent será hidden em telas pequenas e mostrado em telas grandes */}
-              <div className="hidden lg:flex absolute top-1/2 -translate-y-1/2 right-0
-                                w-[500px] h-[500px] sm:w-[600px] sm:h-[600px] md:w-[700px] md:h-[700px] lg:w-[800px] lg:h-[800px] xl:w-[900px] xl:h-[900px]
-                                z-[1] overflow-visible items-center justify-center
-                                mr-[-100px] sm:mr-[-150px] md:mr-[-200px] lg:mr-[-250px] xl:mr-[-300px]">
-                {svgContent}
-              </div>
-            </div>
+/* ── Social links ───────────────────────────────────────────────── */
+const socialLinks = [
+  { href: 'https://linkedin.com/in/danilo-lira-82b17516b', Icon: FaLinkedin, label: 'LinkedIn'  },
+  { href: 'https://github.com/danilohenriquesilvalira',     Icon: FaGithub,   label: 'GitHub'    },
+  { href: 'mailto:danilosilvalira@hotmail.com',             Icon: FaEnvelope, label: 'Email'     },
+  { href: 'https://wa.me/351935479757',                     Icon: FaWhatsapp, label: 'WhatsApp'  },
+];
+
+/* ── Hero section ───────────────────────────────────────────────── */
+const HeroSection = () => {
+  const typedText = useTyping(TYPING_WORDS);
+
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - NAVBAR_H, behavior: 'smooth' });
+  };
+
+  return (
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center overflow-hidden bg-[#f7f7f7]"
+      style={{ paddingTop: NAVBAR_H }}
+    >
+      {/* particles.js clone */}
+      <ParticleBackground />
+
+      <div className="relative z-10 w-full max-w-screen-xl mx-auto
+                      px-8 sm:px-12 lg:px-16
+                      flex flex-col-reverse lg:flex-row items-center justify-between
+                      gap-12 py-16 lg:py-0 min-h-[calc(100vh-72px)]">
+
+        {/* ── LEFT ──────────────────────────────────────────────── */}
+        <div className="flex-1 text-center lg:text-left">
+
+          <h3 className="text-xl font-medium text-slate-600 mb-3">
+            Olá, Eu Sou
+          </h3>
+
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-slate-900 leading-tight mb-4">
+            Danilo <span className="text-blue-600">Lira</span>
+          </h2>
+
+          <p className="text-xl sm:text-2xl text-slate-600 mb-8 h-9">
+            Sou&nbsp;
+            <span className="text-blue-600 font-semibold">
+              {typedText}
+              <span className="inline-block w-[2px] h-6 bg-blue-600 align-middle ml-0.5
+                               animate-[blink_1s_step-end_infinite]" />
+            </span>
+          </p>
+
+          <button
+            onClick={() => scrollTo('about')}
+            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full
+                       bg-blue-600 hover:bg-blue-700 text-white font-semibold text-base
+                       shadow-[0_5px_20px_rgba(37,99,235,0.55)]
+                       hover:shadow-[0_8px_28px_rgba(37,99,235,0.65)]
+                       transition-all duration-300 mb-10"
+          >
+            Sobre Mim
+            <FaArrowCircleDown className="text-xl" />
+          </button>
+
+          <div className="flex items-center justify-center lg:justify-start gap-4">
+            {socialLinks.map(({ href, Icon, label }) => (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith('http') ? '_blank' : undefined}
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="w-12 h-12 rounded-full bg-slate-900 hover:bg-blue-600
+                           flex items-center justify-center text-white text-xl
+                           shadow-lg hover:shadow-[0_4px_16px_rgba(37,99,235,0.5)]
+                           transition-all duration-300 hover:-translate-y-1"
+              >
+                <Icon />
+              </a>
+            ))}
           </div>
         </div>
+
+        {/* ── RIGHT: Tilt image ─────────────────────────────────── */}
+        <div className="flex-shrink-0 flex items-center justify-center">
+          <TiltImage />
+        </div>
+
       </div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1"
+        animate={{ y: [0, 8, 0] }}
+        transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <div className="w-6 h-10 rounded-full border-2 border-slate-400 flex items-start justify-center pt-1.5">
+          <div className="w-1.5 h-3 rounded-full bg-blue-600" />
+        </div>
+      </motion.div>
     </section>
   );
 };
