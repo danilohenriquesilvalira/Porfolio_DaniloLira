@@ -12,10 +12,10 @@ const navLinks = [
 ];
 
 const socialLinks = [
-  { href: 'https://linkedin.com/in/danilo-lira-82b17516b',     icon: <FaLinkedin size={15} />, label: 'LinkedIn'  },
-  { href: 'https://github.com/danilohenriquesilvalira',         icon: <FaGithub   size={15} />, label: 'GitHub'    },
-  { href: 'mailto:danilosilvalira@hotmail.com',                 icon: <FaEnvelope size={15} />, label: 'Email'     },
-  { href: 'https://wa.me/351935479757',                         icon: <FaWhatsapp size={15} />, label: 'WhatsApp'  },
+  { href: 'https://linkedin.com/in/danilo-lira-82b17516b',     icon: <FaLinkedin size={18} />, label: 'LinkedIn'  },
+  { href: 'https://github.com/danilohenriquesilvalira',         icon: <FaGithub   size={18} />, label: 'GitHub'    },
+  { href: 'mailto:danilosilvalira@hotmail.com',                 icon: <FaEnvelope size={18} />, label: 'Email'     },
+  { href: 'https://wa.me/351935479757',                         icon: <FaWhatsapp size={18} />, label: 'WhatsApp'  },
 ];
 
 const LogoSVG = () => (
@@ -131,12 +131,12 @@ const Navbar = () => {
         </div>
 
         {/* Desktop social */}
-        <div className="hidden md:flex items-center gap-1 border-l border-slate-200 ml-4 pl-4">
+        <div className="hidden md:flex items-center gap-1.5 border-l border-slate-200 ml-4 pl-4">
           {socialLinks.map(s => (
             <a key={s.label} href={s.href}
                target={s.href.startsWith('http') ? '_blank' : undefined}
                rel="noopener noreferrer" aria-label={s.label}
-               className="p-2.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-150">
+               className="p-2.5 text-slate-900 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-150">
               {s.icon}
             </a>
           ))}
