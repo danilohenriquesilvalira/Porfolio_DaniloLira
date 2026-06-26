@@ -41,11 +41,21 @@ function useTyping(words: string[], speed = 90, del = 55, pause = 1800) {
 }
 
 /* ── Altura real do viewport medida via JS — evita os problemas
-       conhecidos de 100vh/100dvh em browsers móveis reais ─────────── */
+       conhecidos de 100vh/100dvh em browsers móveis reais. Só recalcula
+       quando a LARGURA muda (rotação/resize real) — ignora o "resize"
+       que o browser mobile dispara ao recolher a barra de endereço
+       no primeiro scroll, que causava um salto/reflow no Hero ─────── */
 function useViewportHeight() {
   const [vh, setVh] = useState<number | null>(null);
+  const lastWidth = useRef<number | null>(null);
+
   useEffect(() => {
-    const update = () => setVh(window.innerHeight);
+    const update = () => {
+      const width = window.innerWidth;
+      if (lastWidth.current !== null && width === lastWidth.current) return;
+      lastWidth.current = width;
+      setVh(window.innerHeight);
+    };
     update();
     window.addEventListener('resize', update);
     window.addEventListener('orientationchange', update);
