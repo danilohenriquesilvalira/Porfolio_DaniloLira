@@ -79,7 +79,7 @@ const ParticleBackground = () => {
           opacity: { value: 0.5 },
           size: { value: { min: 1, max: 5 } },
           links: { enable: true, distance: 150, color: '#000000', opacity: 0.4, width: 1 },
-          move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, outModes: { default: 'out' } },
+          move: { enable: true, speed: 1.2, direction: 'none', random: false, straight: false, outModes: { default: 'out' } },
         },
         interactivity: {
           events: {
