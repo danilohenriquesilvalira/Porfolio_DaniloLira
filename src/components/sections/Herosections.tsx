@@ -163,14 +163,14 @@ const TiltImage = () => {
           transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
         >
           {/* outer glow ring */}
-          <div className="absolute -inset-2 sm:-inset-3 rounded-full bg-yellow-400/30 blur-md" />
+          <div className="absolute -inset-3 sm:-inset-4 rounded-full bg-blue-500/30 blur-md" />
 
-          {/* yellow circle + image — identical to Jigar */}
+          {/* circle + image — azul, alinhado com a paleta preto/azul/branco do site */}
           <div
-            className="relative w-36 h-36 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-[380px] lg:h-[380px]
+            className="relative w-44 h-44 sm:w-80 sm:h-80 md:w-[360px] md:h-[360px] lg:w-[440px] lg:h-[440px]
                        rounded-full overflow-hidden select-none
                        shadow-[0_12px_40px_rgba(0,0,0,0.25)]"
-            style={{ background: 'radial-gradient(circle at 60% 40%, #FFD700, #FFA500)' }}
+            style={{ background: 'radial-gradient(circle at 60% 40%, #3b82f6, #1d4ed8)' }}
           >
             <img
               src={asset('/images/Danilo_Herosection.svg')}
