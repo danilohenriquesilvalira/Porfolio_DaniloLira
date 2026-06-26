@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { FaTimes, FaLinkedin, FaGithub, FaEnvelope, FaWhatsapp } from 'react-icons/fa';
 
 const NAVBAR_H = 72; // px — keep in sync with Herosections NAVBAR_H
@@ -39,12 +40,17 @@ const LogoSVG = () => (
 );
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+
   const [active, setActive]           = useState('home');
   const [toggle, setToggle]           = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
   const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
+    if (!isHome) return;
     const handleScroll = () => {
       if (isNavigating) return;
       const threshold = NAVBAR_H + 16;
@@ -66,7 +72,7 @@ const Navbar = () => {
     window.addEventListener('scroll', throttle);
     handleScroll();
     return () => { window.removeEventListener('scroll', throttle); if (timeoutId.current) clearTimeout(timeoutId.current); };
-  }, [isNavigating, active]);
+  }, [isNavigating, active, isHome]);
 
   // Fecha o drawer mobile automaticamente se o utilizador tentar rolar a página com o menu aberto
   useEffect(() => {
@@ -77,7 +83,17 @@ const Navbar = () => {
   }, [toggle]);
 
   const go = (id: string) => {
-    setActive(id); setToggle(false); setIsNavigating(true);
+    setToggle(false);
+
+    // Se estivermos numa página diferente (ex: /projetos), navega para o
+    // Início e só depois rola até à secção pedida.
+    if (!isHome) {
+      navigate('/', { state: id === 'home' ? null : { scrollTo: id } });
+      setActive(id);
+      return;
+    }
+
+    setActive(id); setIsNavigating(true);
     setTimeout(() => {
       if (id === 'home') {
         window.scrollTo({ top: 0, behavior: 'smooth' });

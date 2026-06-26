@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaLaptopCode, FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { FaLaptopCode, FaGithub, FaExternalLinkAlt, FaArrowRight } from 'react-icons/fa';
 import { projects } from '@/data/projects';
 import { asset } from '@/lib/utils';
 
@@ -98,6 +99,19 @@ const ProjectsPage = () => {
               </motion.div>
             ))}
           </AnimatePresence>
+        </div>
+
+        {/* Ver todos */}
+        <div className="flex justify-center mt-12">
+          <Link
+            to="/projetos"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full
+                       bg-slate-900 hover:bg-blue-600 text-white font-semibold text-sm
+                       shadow-lg transition-all duration-300"
+          >
+            Ver Todos os Projetos
+            <FaArrowRight />
+          </Link>
         </div>
 
       </div>
