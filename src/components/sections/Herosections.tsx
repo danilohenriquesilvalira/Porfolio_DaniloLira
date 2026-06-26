@@ -157,7 +157,7 @@ const TiltImage = () => {
             style={{ background: 'radial-gradient(circle at 60% 40%, #3b82f6, #1d4ed8)' }}
           >
             <img
-              src={asset('/images/Danilo_Herosection.svg')}
+              src={asset('/images/Danilo_Herosection.webp')}
               alt="Danilo Lira"
               className="w-full h-full object-cover object-top"
               draggable={false}

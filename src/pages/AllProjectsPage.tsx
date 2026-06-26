@@ -53,7 +53,7 @@ const AllProjectsPage = () => {
                   draggable={false}
                 />
                 <div className="absolute inset-x-0 bottom-0 h-full flex flex-col justify-end
-                                bg-slate-900/95 backdrop-blur-sm p-5
+                                bg-slate-900 p-5
                                 translate-y-[64%] group-hover:translate-y-0
                                 transition-transform duration-300 ease-out">
                   <h3 className="text-white font-bold text-base mb-2 line-clamp-2">{project.title}</h3>

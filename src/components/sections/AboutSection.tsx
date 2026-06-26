@@ -31,7 +31,7 @@ const AboutSection = () => {
             viewport={{ once: true }}
           >
             <img
-              src={asset('/Eu.png')}
+              src={asset('/Eu.webp')}
               alt="Danilo Lira"
               className="w-4/5 sm:w-72 md:w-80 lg:w-96 xl:w-[26rem] h-auto
                          rounded-[5%] shadow-[0_5px_20px_rgba(0,0,0,0.35)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.3)]
