@@ -52,10 +52,10 @@ const Dot = ({ active }: { active: boolean }) => (
 const Card = ({ exp, arrow }: { exp: Exp; arrow: 'left' | 'right' }) => {
   const active = exp.current;
   return (
-    <div className={`relative rounded-xl p-5 w-full md:max-w-sm transition-colors duration-300
+    <div className={`relative rounded-xl p-5 w-full md:max-w-sm transition-all duration-300
                      ${active
-                       ? 'bg-blue-600 text-white shadow-[0_4px_16px_rgba(37,99,235,0.3)]'
-                       : 'bg-slate-200/70 text-slate-500 shadow-[0_2px_8px_rgba(0,0,0,0.04)]'}`}>
+                       ? 'bg-blue-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
+                       : 'bg-slate-200/70 text-slate-500 shadow-sm hover:shadow-md hover:-translate-y-0.5'}`}>
       <div
         className={`hidden md:block absolute top-5 w-0 h-0 border-[9px] border-transparent
           ${arrow === 'right'

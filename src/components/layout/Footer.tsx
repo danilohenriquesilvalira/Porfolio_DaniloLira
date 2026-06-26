@@ -36,7 +36,7 @@ function Footer() {
                 rel="noopener noreferrer"
                 aria-label={s.label}
                 className="w-9 h-9 rounded-lg bg-slate-800 hover:bg-blue-600 text-slate-400 hover:text-white
-                           flex items-center justify-center transition-all duration-200"
+                           hover:scale-110 active:scale-95 flex items-center justify-center transition-all duration-200"
               >
                 {s.icon}
               </a>

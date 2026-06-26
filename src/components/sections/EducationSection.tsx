@@ -51,7 +51,7 @@ const EducationSection = () => {
               key={edu.degree}
               className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left
                          gap-3 sm:gap-5 p-6 rounded-2xl bg-[#f7f7f7] border border-slate-100
-                         shadow-[0_4px_16px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_24px_rgba(37,99,235,0.12)]
+                         shadow-sm hover:shadow-xl hover:-translate-y-1
                          hover:border-blue-200 transition-all duration-300"
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}

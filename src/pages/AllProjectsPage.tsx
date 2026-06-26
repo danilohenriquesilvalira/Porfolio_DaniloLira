@@ -43,7 +43,9 @@ const AllProjectsPage = () => {
               transition={{ duration: 0.4, delay: i * 0.05 }}
             >
               {/* Desktop: card com painel deslizante no hover */}
-              <div className="hidden md:block group relative h-80 rounded-2xl overflow-hidden bg-slate-800 shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+              <div className="hidden md:block group relative h-80 rounded-2xl overflow-hidden bg-slate-800 border border-white/0 hover:border-blue-500/40
+                              shadow-[0_10px_30px_rgba(0,0,0,0.4)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.5)]
+                              hover:-translate-y-1 transition-all duration-300">
                 <img
                   src={asset(project.thumbnail)}
                   alt={project.title}
@@ -66,13 +68,13 @@ const AllProjectsPage = () => {
                   <div className="flex gap-3">
                     {project.github !== '#' && (
                       <a href={project.github} target="_blank" rel="noopener noreferrer"
-                         className="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-white/10 hover:bg-blue-600 px-3 py-1.5 rounded-lg transition-colors">
+                         className="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-white/10 hover:bg-blue-600 px-3 py-1.5 rounded-lg hover:scale-105 active:scale-95 transition-all duration-200">
                         <FaGithub /> Código
                       </a>
                     )}
                     {project.link && (
                       <a href={project.link} target="_blank" rel="noopener noreferrer"
-                         className="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-white/10 hover:bg-blue-600 px-3 py-1.5 rounded-lg transition-colors">
+                         className="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-white/10 hover:bg-blue-600 px-3 py-1.5 rounded-lg hover:scale-105 active:scale-95 transition-all duration-200">
                         <FaExternalLinkAlt /> Ver
                       </a>
                     )}
@@ -103,13 +105,13 @@ const AllProjectsPage = () => {
                   <div className="flex gap-3 mt-auto">
                     {project.github !== '#' && (
                       <a href={project.github} target="_blank" rel="noopener noreferrer"
-                         className="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-white/10 hover:bg-blue-600 px-3 py-1.5 rounded-lg transition-colors">
+                         className="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-white/10 hover:bg-blue-600 px-3 py-1.5 rounded-lg hover:scale-105 active:scale-95 transition-all duration-200">
                         <FaGithub /> Código
                       </a>
                     )}
                     {project.link && (
                       <a href={project.link} target="_blank" rel="noopener noreferrer"
-                         className="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-white/10 hover:bg-blue-600 px-3 py-1.5 rounded-lg transition-colors">
+                         className="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-white/10 hover:bg-blue-600 px-3 py-1.5 rounded-lg hover:scale-105 active:scale-95 transition-all duration-200">
                         <FaExternalLinkAlt /> Ver
                       </a>
                     )}
@@ -123,10 +125,11 @@ const AllProjectsPage = () => {
         <div className="flex justify-center mt-14">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border-2 border-white/70 text-white font-semibold
-                       hover:bg-white hover:text-slate-900 transition-all duration-300"
+            className="group inline-flex items-center gap-2 px-6 py-3 rounded-full border-2 border-white/70 text-white font-semibold
+                       hover:bg-white hover:text-slate-900 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]
+                       transition-all duration-200"
           >
-            <FaArrowLeft /> Voltar ao Início
+            <FaArrowLeft className="transition-transform duration-200 group-hover:-translate-x-1" /> Voltar ao Início
           </Link>
         </div>
 

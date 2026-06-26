@@ -34,9 +34,9 @@ const AboutSection = () => {
               src={asset('/Eu.png')}
               alt="Danilo Lira"
               className="w-4/5 sm:w-72 md:w-80 lg:w-96 xl:w-[26rem] h-auto
-                         rounded-[5%] shadow-[0_5px_20px_rgba(0,0,0,0.35)]
+                         rounded-[5%] shadow-[0_5px_20px_rgba(0,0,0,0.35)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.3)]
                          mix-blend-normal sm:mix-blend-luminosity sm:hover:mix-blend-normal
-                         transition-all duration-300 cursor-pointer select-none"
+                         hover:-translate-y-1 transition-all duration-300 cursor-pointer select-none"
               draggable={false}
             />
           </motion.div>
@@ -84,13 +84,13 @@ const AboutSection = () => {
               href={asset('/Danilo_Lira_CV.pdf')}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-lg
+              className="group inline-flex items-center gap-2 px-8 py-4 rounded-lg
                          bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm
-                         shadow-[0_5px_18px_rgba(37,99,235,0.4)]
-                         transition-all duration-300"
+                         shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]
+                         transition-all duration-200"
             >
               Currículo
-              <FaDownload />
+              <FaDownload className="transition-transform duration-200 group-hover:translate-y-0.5" />
             </a>
           </motion.div>
 

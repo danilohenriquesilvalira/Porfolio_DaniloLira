@@ -152,7 +152,7 @@ const Navbar = () => {
             <a key={s.label} href={s.href}
                target={s.href.startsWith('http') ? '_blank' : undefined}
                rel="noopener noreferrer" aria-label={s.label}
-               className="p-2.5 text-slate-900 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-150">
+               className="p-2.5 text-slate-900 hover:text-blue-600 hover:bg-blue-50 hover:scale-110 active:scale-95 rounded-lg transition-all duration-150">
               {s.icon}
             </a>
           ))}
@@ -207,7 +207,8 @@ const Navbar = () => {
                      target={s.href.startsWith('http') ? '_blank' : undefined}
                      rel="noopener noreferrer" aria-label={s.label}
                      className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-blue-50 hover:text-blue-600
-                                flex items-center justify-center text-slate-600 transition-all">
+                                hover:scale-110 active:scale-95 flex items-center justify-center text-slate-600
+                                transition-all duration-150">
                     {s.icon}
                   </a>
                 ))}

@@ -42,9 +42,8 @@ const ProjectsPage = () => {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.35, delay: i * 0.05 }}
                 className="group flex flex-col rounded-2xl overflow-hidden bg-white
-                           border border-slate-100
-                           shadow-[0_4px_16px_rgba(0,0,0,0.07)]
-                           hover:shadow-[0_12px_32px_rgba(37,99,235,0.15)]
+                           border border-slate-100 hover:border-blue-200
+                           shadow-sm hover:shadow-xl
                            hover:-translate-y-1 transition-all duration-300"
               >
                 {/* Thumbnail */}
@@ -61,14 +60,16 @@ const ProjectsPage = () => {
                     {project.github !== '#' && (
                       <a href={project.github} target="_blank" rel="noopener noreferrer"
                          className="w-10 h-10 rounded-full bg-white flex items-center justify-center
-                                    text-blue-600 hover:bg-blue-600 hover:text-white transition-colors">
+                                    text-blue-600 hover:bg-blue-600 hover:text-white hover:scale-110 active:scale-95
+                                    transition-all duration-200">
                         <FaGithub className="text-lg" />
                       </a>
                     )}
                     {project.link && (
                       <a href={project.link} target="_blank" rel="noopener noreferrer"
                          className="w-10 h-10 rounded-full bg-white flex items-center justify-center
-                                    text-blue-600 hover:bg-blue-600 hover:text-white transition-colors">
+                                    text-blue-600 hover:bg-blue-600 hover:text-white hover:scale-110 active:scale-95
+                                    transition-all duration-200">
                         <FaExternalLinkAlt className="text-sm" />
                       </a>
                     )}
@@ -105,12 +106,13 @@ const ProjectsPage = () => {
         <div className="flex justify-center mt-12">
           <Link
             to="/projetos"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full
+            className="group inline-flex items-center gap-2 px-6 py-3 rounded-full
                        bg-slate-900 hover:bg-blue-600 text-white font-semibold text-sm
-                       shadow-lg transition-all duration-300"
+                       shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]
+                       transition-all duration-200"
           >
             Ver Todos os Projetos
-            <FaArrowRight />
+            <FaArrowRight className="transition-transform duration-200 group-hover:translate-x-1" />
           </Link>
         </div>
 
