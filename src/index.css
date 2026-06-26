@@ -12,6 +12,9 @@ html {
   scroll-behavior: smooth;
   font-family: 'Poppins', sans-serif;
   color-scheme: light;
+  overflow-x: hidden;
+  width: 100%;
+  overscroll-behavior-x: none;
 }
 
 body {
@@ -20,6 +23,8 @@ body {
   font-family: 'Poppins', sans-serif;
   line-height: 1.6;
   overflow-x: hidden;
+  width: 100%;
+  overscroll-behavior-x: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
