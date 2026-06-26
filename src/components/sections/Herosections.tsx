@@ -40,6 +40,23 @@ function useTyping(words: string[], speed = 90, del = 55, pause = 1800) {
   return text;
 }
 
+/* ── Altura real do viewport medida via JS — evita os problemas
+       conhecidos de 100vh/100dvh em browsers móveis reais ─────────── */
+function useViewportHeight() {
+  const [vh, setVh] = useState<number | null>(null);
+  useEffect(() => {
+    const update = () => setVh(window.innerHeight);
+    update();
+    window.addEventListener('resize', update);
+    window.addEventListener('orientationchange', update);
+    return () => {
+      window.removeEventListener('resize', update);
+      window.removeEventListener('orientationchange', update);
+    };
+  }, []);
+  return vh;
+}
+
 /* ── Particle background — mesma engine (tsparticles) e mesma config
        JSON do particles.js usado no portfólio de referência ────── */
 const ParticleBackground = () => {
@@ -179,6 +196,7 @@ const socialLinks = [
 /* ── Hero section ───────────────────────────────────────────────── */
 const HeroSection = () => {
   const typedText = useTyping(TYPING_WORDS);
+  const vh = useViewportHeight();
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -188,17 +206,16 @@ const HeroSection = () => {
   return (
     <section
       id="home"
-      className="relative overflow-hidden bg-[#f7f7f7]"
-      style={{ paddingTop: NAVBAR_H }}
+      className="relative overflow-hidden bg-[#f7f7f7] flex flex-col"
+      style={{ paddingTop: NAVBAR_H, minHeight: vh ? `${vh}px` : '100vh' }}
     >
       {/* particles.js clone */}
       <ParticleBackground />
 
-      <div className="relative z-10 flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-between
+      <div className="relative z-10 flex-1 flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-between
                       w-full max-w-screen-xl mx-auto
                       px-5 sm:px-12 lg:px-16
-                      gap-4 sm:gap-10 lg:gap-12
-                      min-h-[calc(100vh-72px-44px)] sm:min-h-[calc(100vh-72px-52px)] py-4 sm:py-8 lg:py-0">
+                      gap-4 sm:gap-10 lg:gap-12 py-4 sm:py-8 lg:py-0">
 
         {/* ── LEFT ──────────────────────────────────────────────── */}
         <div className="flex-1 text-center lg:text-left">
