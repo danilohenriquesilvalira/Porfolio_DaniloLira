@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { FaLinkedin, FaGithub, FaEnvelope, FaWhatsapp, FaArrowCircleDown } from 'react-icons/fa';
-import Particles from 'react-tsparticles';
-import type { Engine } from 'tsparticles-engine';
-import { loadFull } from 'tsparticles';
 import { asset } from '@/lib/utils';
+
+// Carregado de forma assíncrona (code-splitting) — é puramente decorativo,
+// não deve bloquear o JS crítico do primeiro paint do texto/imagem do Hero.
+const ParticleBackground = lazy(() => import('./ParticleBackground'));
 
 const NAVBAR_H = 72;
 const TYPING_WORDS = [
@@ -67,46 +68,6 @@ function useViewportHeight() {
   return vh;
 }
 
-/* ── Particle background — mesma engine (tsparticles) e mesma config
-       JSON do particles.js usado no portfólio de referência ────── */
-const ParticleBackground = () => {
-  const init = useCallback(async (engine: Engine) => {
-    await loadFull(engine);
-  }, []);
-
-  return (
-    <Particles
-      className="absolute inset-0"
-      init={init}
-      options={{
-        fullScreen: { enable: false },
-        background: { color: { value: 'transparent' } },
-        fpsLimit: 60,
-        particles: {
-          number: { value: 80, density: { enable: true, area: 800 } },
-          color: { value: '#000000' },
-          shape: { type: 'circle' },
-          opacity: { value: 0.5 },
-          size: { value: { min: 1, max: 5 } },
-          links: { enable: true, distance: 150, color: '#000000', opacity: 0.4, width: 1 },
-          move: { enable: true, speed: 1.2, direction: 'none', random: false, straight: false, outModes: { default: 'out' } },
-        },
-        interactivity: {
-          events: {
-            onHover: { enable: true, mode: 'repulse' },
-            onClick: { enable: true, mode: 'push' },
-          },
-          modes: {
-            repulse: { distance: 200, duration: 0.4 },
-            push: { quantity: 4 },
-          },
-        },
-        detectRetina: true,
-      }}
-    />
-  );
-};
-
 /* ── Carrossel de tecnologias — marquee infinito no fundo do Hero ── */
 const techLogos = [
   { icon: '/techExpertise/Tia_portal.svg', name: 'TIA Portal'  },
@@ -145,14 +106,31 @@ const TechMarquee = () => (
 const TiltImage = () => {
   const ref  = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const rafId = useRef<number | null>(null);
 
+  // O mousemove dispara a uma frequência muito maior do que o ecrã consegue
+  // pintar — sem isto, cada pixel de movimento provocava um re-render do
+  // componente e das motion.div aninhadas, sendo a causa das "leves travadas"
+  // sentidas ao mexer o rato sobre o Hero. Limitar a 1 atualização por frame
+  // (via requestAnimationFrame) resolve isso sem perder suavidade visual.
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el   = ref.current!;
-    const rect = el.getBoundingClientRect();
-    const nx   = (e.clientX - rect.left  - rect.width  / 2) / (rect.width  / 2); // -1..1
-    const ny   = (e.clientY - rect.top   - rect.height / 2) / (rect.height / 2); // -1..1
-    setTilt({ x: ny * -20, y: nx * 20 });
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+    if (rafId.current !== null) return;
+    rafId.current = requestAnimationFrame(() => {
+      rafId.current = null;
+      const el   = ref.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const nx   = (clientX - rect.left - rect.width  / 2) / (rect.width  / 2); // -1..1
+      const ny   = (clientY - rect.top  - rect.height / 2) / (rect.height / 2); // -1..1
+      setTilt({ x: ny * -20, y: nx * 20 });
+    });
   };
+
+  useEffect(() => () => {
+    if (rafId.current !== null) cancelAnimationFrame(rafId.current);
+  }, []);
 
   return (
     <div
@@ -220,7 +198,9 @@ const HeroSection = () => {
       style={{ paddingTop: NAVBAR_H, minHeight: vh ? `${vh}px` : '100vh' }}
     >
       {/* particles.js clone */}
-      <ParticleBackground />
+      <Suspense fallback={null}>
+        <ParticleBackground />
+      </Suspense>
 
       <div className="relative z-10 flex-1 flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-between
                       w-full max-w-screen-xl mx-auto
@@ -249,14 +229,13 @@ const HeroSection = () => {
 
           <button
             onClick={() => scrollTo('about')}
-            className="inline-flex items-center gap-2 sm:gap-2.5 px-6 sm:px-8 py-3 sm:py-4 rounded-full
+            className="group inline-flex items-center gap-2 sm:gap-2.5 px-6 sm:px-8 py-3 sm:py-4 rounded-full
                        bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm sm:text-base
-                       shadow-[0_5px_20px_rgba(37,99,235,0.55)]
-                       hover:shadow-[0_8px_28px_rgba(37,99,235,0.65)]
-                       transition-all duration-300 mb-5 sm:mb-10"
+                       shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]
+                       transition-all duration-200 mb-5 sm:mb-10"
           >
             Sobre Mim
-            <FaArrowCircleDown className="text-lg sm:text-xl" />
+            <FaArrowCircleDown className="text-lg sm:text-xl transition-transform duration-200 group-hover:translate-y-0.5" />
           </button>
 
           <div className="flex items-center justify-center lg:justify-start gap-3 sm:gap-4">
@@ -269,8 +248,8 @@ const HeroSection = () => {
                 aria-label={label}
                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-900 hover:bg-blue-600
                            flex items-center justify-center text-white text-lg sm:text-xl
-                           shadow-lg hover:shadow-[0_4px_16px_rgba(37,99,235,0.5)]
-                           transition-all duration-300 hover:-translate-y-1"
+                           shadow-md hover:shadow-lg
+                           transition-all duration-200 hover:-translate-y-1 hover:scale-110 active:scale-95"
               >
                 <Icon />
               </a>
