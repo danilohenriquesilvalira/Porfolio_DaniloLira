@@ -218,7 +218,7 @@ const HeroSection = () => {
                       gap-4 sm:gap-10 lg:gap-12 py-4 sm:py-8 lg:py-0">
 
         {/* ── LEFT ──────────────────────────────────────────────── */}
-        <div className="flex-1 text-center lg:text-left">
+        <div className="w-full lg:flex-1 text-center lg:text-left">
 
           <h3 className="text-base sm:text-xl font-medium text-slate-600 mb-1.5 sm:mb-3">
             Olá, Eu Sou
