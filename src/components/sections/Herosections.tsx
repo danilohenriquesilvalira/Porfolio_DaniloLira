@@ -80,6 +80,36 @@ const ParticleBackground = () => {
   );
 };
 
+/* ── Ícones flutuantes de tecnologias — decoração de fundo do Hero ── */
+const techIcons = [
+  { icon: '/techExpertise/Tia_portal.svg',  top: '14%', left: '6%',  size: 'w-12 h-12', duration: 4.5, delay: 0   },
+  { icon: '/techExpertise/react.svg',       top: '68%', left: '8%',  size: 'w-10 h-10', duration: 5.2, delay: 0.6 },
+  { icon: '/techExpertise/python.svg',      top: '20%', left: '38%', size: 'w-9 h-9',   duration: 4,   delay: 1.1 },
+  { icon: '/techExpertise/wincc.svg',       top: '82%', left: '34%', size: 'w-11 h-11', duration: 5.6, delay: 0.3 },
+  { icon: '/techExpertise/go.svg',          top: '12%', left: '92%', size: 'w-10 h-10', duration: 4.8, delay: 0.9 },
+  { icon: '/techExpertise/typescript.svg',  top: '46%', left: '95%', size: 'w-9 h-9',   duration: 5,   delay: 1.4 },
+  { icon: '/techExpertise/Rockewell.svg',   top: '78%', left: '90%', size: 'w-12 h-12', duration: 4.3, delay: 0.2 },
+  { icon: '/techExpertise/postgresql.svg',  top: '90%', left: '62%', size: 'w-9 h-9',   duration: 5.4, delay: 1.7 },
+];
+
+const FloatingTechIcons = () => (
+  <div className="hidden lg:block absolute inset-0 z-[5] pointer-events-none">
+    {techIcons.map((t, i) => (
+      <motion.div
+        key={i}
+        className={`absolute ${t.size} rounded-2xl bg-white/90 backdrop-blur-sm
+                   border border-slate-100 shadow-[0_8px_24px_rgba(0,0,0,0.08)]
+                   flex items-center justify-center p-2`}
+        style={{ top: t.top, left: t.left }}
+        animate={{ y: [0, -14, 0], rotate: [0, 4, 0] }}
+        transition={{ duration: t.duration, delay: t.delay, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <img src={asset(t.icon)} alt="" className="w-full h-full object-contain" draggable={false} />
+      </motion.div>
+    ))}
+  </div>
+);
+
 /* ── 3-D tilt image (replicates tilt.js behaviour) ─────────────── */
 const TiltImage = () => {
   const ref  = useRef<HTMLDivElement>(null);
@@ -159,6 +189,7 @@ const HeroSection = () => {
     >
       {/* particles.js clone */}
       <ParticleBackground />
+      <FloatingTechIcons />
 
       <div className="relative z-10 w-full max-w-screen-xl mx-auto
                       px-5 sm:px-12 lg:px-16

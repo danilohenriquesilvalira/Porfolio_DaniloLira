@@ -3,7 +3,6 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Herosections from '@/components/sections/Herosections'
 import AboutSection from '@/components/sections/AboutSection'
-import TechExpertise from '@/components/sections/TechExpertise'
 import EducationSection from '@/components/sections/EducationSection'
 import Experiencia from '@/components/sections/Experiencia'
 import ProjectsPage from '@/components/sections/ProjectsPage'
@@ -20,7 +19,6 @@ export default function App() {
       <main>
         <Herosections />
         <AboutSection />
-        <TechExpertise />
         <EducationSection />
         <Experiencia />
         <ProjectsPage />

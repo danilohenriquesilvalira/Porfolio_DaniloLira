@@ -6,7 +6,6 @@ const NAVBAR_H = 72; // px — keep in sync with Herosections NAVBAR_H
 const navLinks = [
   { title: 'Início',      id: 'home',           path: '#home'           },
   { title: 'Sobre',       id: 'about',          path: '#about'          },
-  { title: 'Skills',      id: 'tech-expertise', path: '#tech-expertise' },
   { title: 'Formação',    id: 'education',      path: '#education'      },
   { title: 'Experiência', id: 'experiencia',    path: '#experiencia'    },
   { title: 'Projetos',    id: 'projects',       path: '#projects'       },
