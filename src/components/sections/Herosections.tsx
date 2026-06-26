@@ -80,33 +80,37 @@ const ParticleBackground = () => {
   );
 };
 
-/* ── Ícones flutuantes de tecnologias — decoração de fundo do Hero ── */
-const techIcons = [
-  { icon: '/techExpertise/Tia_portal.svg',  top: '14%', left: '6%',  size: 'w-12 h-12', duration: 4.5, delay: 0   },
-  { icon: '/techExpertise/react.svg',       top: '68%', left: '8%',  size: 'w-10 h-10', duration: 5.2, delay: 0.6 },
-  { icon: '/techExpertise/python.svg',      top: '20%', left: '38%', size: 'w-9 h-9',   duration: 4,   delay: 1.1 },
-  { icon: '/techExpertise/wincc.svg',       top: '82%', left: '34%', size: 'w-11 h-11', duration: 5.6, delay: 0.3 },
-  { icon: '/techExpertise/go.svg',          top: '12%', left: '92%', size: 'w-10 h-10', duration: 4.8, delay: 0.9 },
-  { icon: '/techExpertise/typescript.svg',  top: '46%', left: '95%', size: 'w-9 h-9',   duration: 5,   delay: 1.4 },
-  { icon: '/techExpertise/Rockewell.svg',   top: '78%', left: '90%', size: 'w-12 h-12', duration: 4.3, delay: 0.2 },
-  { icon: '/techExpertise/postgresql.svg',  top: '90%', left: '62%', size: 'w-9 h-9',   duration: 5.4, delay: 1.7 },
+/* ── Carrossel de tecnologias — marquee infinito no fundo do Hero ── */
+const techLogos = [
+  { icon: '/techExpertise/Tia_portal.svg', name: 'TIA Portal'  },
+  { icon: '/techExpertise/wincc.svg',      name: 'WinCC'       },
+  { icon: '/techExpertise/ignition.svg',   name: 'Ignition'    },
+  { icon: '/techExpertise/Rockewell.svg',  name: 'Rockwell'    },
+  { icon: '/techExpertise/opcua.svg',      name: 'OPC UA'      },
+  { icon: '/techExpertise/python.svg',     name: 'Python'      },
+  { icon: '/techExpertise/go.svg',         name: 'Go'          },
+  { icon: '/techExpertise/rust.svg',       name: 'Rust'        },
+  { icon: '/techExpertise/typescript.svg', name: 'TypeScript'  },
+  { icon: '/techExpertise/react.svg',      name: 'React'       },
+  { icon: '/techExpertise/node-red.svg',   name: 'Node-RED'    },
+  { icon: '/techExpertise/postgresql.svg', name: 'PostgreSQL'  },
+  { icon: '/techExpertise/linux.svg',      name: 'Linux'       },
+  { icon: '/techExpertise/github.svg',     name: 'GitHub'      },
 ];
 
-const FloatingTechIcons = () => (
-  <div className="hidden lg:block absolute inset-0 z-[5] pointer-events-none">
-    {techIcons.map((t, i) => (
-      <motion.div
-        key={i}
-        className={`absolute ${t.size} rounded-2xl bg-white/90 backdrop-blur-sm
-                   border border-slate-100 shadow-[0_8px_24px_rgba(0,0,0,0.08)]
-                   flex items-center justify-center p-2`}
-        style={{ top: t.top, left: t.left }}
-        animate={{ y: [0, -14, 0], rotate: [0, 4, 0] }}
-        transition={{ duration: t.duration, delay: t.delay, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <img src={asset(t.icon)} alt="" className="w-full h-full object-contain" draggable={false} />
-      </motion.div>
-    ))}
+const TechMarquee = () => (
+  <div className="relative z-10 w-full overflow-hidden border-t border-slate-200/70 bg-white/50 backdrop-blur-sm py-2.5 sm:py-3">
+    <div className="flex w-max gap-8 sm:gap-12 animate-[marquee_28s_linear_infinite]">
+      {[...techLogos, ...techLogos].map((t, i) => (
+        <div key={i} className="flex items-center gap-2 flex-shrink-0">
+          <img src={asset(t.icon)} alt="" className="w-5 h-5 sm:w-6 sm:h-6 object-contain" draggable={false} />
+          <span className="text-[11px] sm:text-xs font-semibold text-slate-500 whitespace-nowrap">{t.name}</span>
+        </div>
+      ))}
+    </div>
+    {/* fade nas pontas */}
+    <div className="absolute inset-y-0 left-0 w-10 sm:w-16 bg-gradient-to-r from-[#f7f7f7] to-transparent" />
+    <div className="absolute inset-y-0 right-0 w-10 sm:w-16 bg-gradient-to-l from-[#f7f7f7] to-transparent" />
   </div>
 );
 
@@ -184,18 +188,17 @@ const HeroSection = () => {
   return (
     <section
       id="home"
-      className="relative min-h-[100dvh] flex items-center overflow-hidden bg-[#f7f7f7]"
+      className="relative overflow-hidden bg-[#f7f7f7]"
       style={{ paddingTop: NAVBAR_H }}
     >
       {/* particles.js clone */}
       <ParticleBackground />
-      <FloatingTechIcons />
 
-      <div className="relative z-10 w-full max-w-screen-xl mx-auto
+      <div className="relative z-10 flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-between
+                      w-full max-w-screen-xl mx-auto
                       px-5 sm:px-12 lg:px-16
-                      flex flex-col-reverse lg:flex-row items-center justify-between
-                      gap-5 sm:gap-10 lg:gap-12 py-6 sm:py-12 lg:py-0
-                      min-h-[calc(100dvh-72px)]">
+                      gap-4 sm:gap-10 lg:gap-12
+                      min-h-[calc(100vh-72px-44px)] sm:min-h-[calc(100vh-72px-52px)] py-4 sm:py-8 lg:py-0">
 
         {/* ── LEFT ──────────────────────────────────────────────── */}
         <div className="flex-1 text-center lg:text-left">
@@ -255,16 +258,8 @@ const HeroSection = () => {
 
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        className="hidden sm:flex absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex-col items-center gap-1"
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <div className="w-6 h-10 rounded-full border-2 border-slate-400 flex items-start justify-center pt-1.5">
-          <div className="w-1.5 h-3 rounded-full bg-blue-600" />
-        </div>
-      </motion.div>
+      {/* Carrossel de tecnologias */}
+      <TechMarquee />
     </section>
   );
 };

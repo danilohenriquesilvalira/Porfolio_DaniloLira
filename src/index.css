@@ -86,6 +86,11 @@ html { scrollbar-width: thin; scrollbar-color: #2563eb #f1f5f9; }
   50%       { opacity: 0; }
 }
 
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
 /* Utility classes */
 .animate-fade-in { animation: fadeIn 0.7s ease-out forwards; }
 .animate-fade-in-up { animation: fadeInUp 0.7s ease-out forwards; }
