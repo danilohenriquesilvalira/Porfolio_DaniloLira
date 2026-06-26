@@ -23,9 +23,13 @@ const ParticleBackground = () => {
       options={{
         fullScreen: { enable: false },
         background: { color: { value: 'transparent' } },
-        fpsLimit: 60,
+        // 30fps é mais que suficiente para um fundo decorativo de partículas
+        // lentas — corta o trabalho de desenho do canvas a meio sem
+        // diferença visual percetível, e era um dos maiores custos de CPU/GPU
+        // a correr permanentemente atrás do Hero.
+        fpsLimit: 30,
         particles: {
-          number: { value: 80, density: { enable: true, area: 800 } },
+          number: { value: 60, density: { enable: true, area: 800 } },
           color: { value: '#000000' },
           shape: { type: 'circle' },
           opacity: { value: 0.5 },
@@ -44,9 +48,13 @@ const ParticleBackground = () => {
           },
         },
         responsive: [
-          { maxWidth: 768, options: { particles: { number: { value: 40 } }, interactivity: { events: { onHover: { enable: false } } } } },
+          { maxWidth: 768, options: { particles: { number: { value: 35 } }, interactivity: { events: { onHover: { enable: false } } } } },
         ],
-        detectRetina: true,
+        // Desligado: em ecrãs retina (DPR 2-3x comum em telemóveis) isto
+        // multiplicava a resolução interna do canvas por até 9x, sendo um
+        // custo de preenchimento de pixels enorme para um efeito puramente
+        // decorativo de linhas finas — visualmente quase impercetível desligado.
+        detectRetina: false,
       }}
     />
   );

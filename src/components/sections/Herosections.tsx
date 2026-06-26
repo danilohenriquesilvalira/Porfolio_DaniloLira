@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, lazy, Suspense } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { FaLinkedin, FaGithub, FaEnvelope, FaWhatsapp, FaArrowCircleDown } from 'react-icons/fa';
 import { asset } from '@/lib/utils';
 
@@ -87,7 +87,7 @@ const techLogos = [
 ];
 
 const TechMarquee = () => (
-  <div className="relative z-10 w-full overflow-hidden border-t border-slate-200/70 bg-white/50 backdrop-blur-sm py-2.5 sm:py-3">
+  <div className="relative z-10 w-full overflow-hidden border-t border-slate-200/70 bg-[#f7f7f7] py-2.5 sm:py-3">
     <div className="flex w-max gap-8 sm:gap-12 animate-[marquee_28s_linear_infinite]">
       {[...techLogos, ...techLogos].map((t, i) => (
         <div key={i} className="flex items-center gap-2 flex-shrink-0">
@@ -102,54 +102,50 @@ const TechMarquee = () => (
   </div>
 );
 
-/* ── 3-D tilt image (replicates tilt.js behaviour) ─────────────── */
+/* ── 3-D tilt image (replicates tilt.js behaviour) ───────────────
+   Usa MotionValues do Framer Motion em vez de useState: o mousemove
+   escreve directamente nos valores (x/y) e o Framer Motion atualiza o
+   transform do DOM fora do ciclo de render do React — zero re-renders
+   do componente durante o movimento do rato. É o que elimina por
+   completo o "travamento" sentido antes (o throttle por rAF ainda
+   disparava um re-render de toda a árvore a cada frame). ─────────── */
 const TiltImage = () => {
-  const ref  = useRef<HTMLDivElement>(null);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const rafId = useRef<number | null>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
-  // O mousemove dispara a uma frequência muito maior do que o ecrã consegue
-  // pintar — sem isto, cada pixel de movimento provocava um re-render do
-  // componente e das motion.div aninhadas, sendo a causa das "leves travadas"
-  // sentidas ao mexer o rato sobre o Hero. Limitar a 1 atualização por frame
-  // (via requestAnimationFrame) resolve isso sem perder suavidade visual.
+  const x = useMotionValue(0); // -0.5..0.5
+  const y = useMotionValue(0); // -0.5..0.5
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [20, -20]), { stiffness: 300, damping: 20 });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-20, 20]), { stiffness: 300, damping: 20 });
+
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const clientX = e.clientX;
-    const clientY = e.clientY;
-    if (rafId.current !== null) return;
-    rafId.current = requestAnimationFrame(() => {
-      rafId.current = null;
-      const el   = ref.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const nx   = (clientX - rect.left - rect.width  / 2) / (rect.width  / 2); // -1..1
-      const ny   = (clientY - rect.top  - rect.height / 2) / (rect.height / 2); // -1..1
-      setTilt({ x: ny * -20, y: nx * 20 });
-    });
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    x.set((e.clientX - rect.left) / rect.width - 0.5);
+    y.set((e.clientY - rect.top) / rect.height - 0.5);
   };
 
-  useEffect(() => () => {
-    if (rafId.current !== null) cancelAnimationFrame(rafId.current);
-  }, []);
+  const reset = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
     <div
       ref={ref}
       className="cursor-pointer"
       onMouseMove={handleMove}
-      onMouseLeave={() => setTilt({ x: 0, y: 0 })}
+      onMouseLeave={reset}
       style={{ perspective: '1000px' }}
     >
       <motion.div
-        animate={{ rotateX: tilt.x, rotateY: tilt.y }}
-        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+        style={{ rotateX, rotateY }}
         className="relative"
       >
-        {/* floating animation wrapper */}
-        <motion.div
-          animate={{ y: [0, -16, 0] }}
-          transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-        >
+        {/* floating animation wrapper — CSS pura (corre no compositor, fora
+            do JS) em vez de um loop infinito do Framer Motion, que mantinha
+            o thread principal ocupado para sempre mesmo sem interação */}
+        <div className="animate-[heroFloat_3.5s_ease-in-out_infinite]">
           {/* outer glow ring */}
           <div className="absolute -inset-3 sm:-inset-4 rounded-full bg-blue-500/30 blur-md" />
 
@@ -167,7 +163,7 @@ const TiltImage = () => {
               draggable={false}
             />
           </div>
-        </motion.div>
+        </div>
       </motion.div>
     </div>
   );
