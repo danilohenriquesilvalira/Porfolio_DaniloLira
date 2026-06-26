@@ -69,6 +69,14 @@ const Navbar = () => {
     return () => { window.removeEventListener('scroll', throttle); if (timeoutId.current) clearTimeout(timeoutId.current); };
   }, [isNavigating, active]);
 
+  // Fecha o drawer mobile automaticamente se o utilizador tentar rolar a página com o menu aberto
+  useEffect(() => {
+    if (!toggle) return;
+    const closeOnScroll = () => setToggle(false);
+    window.addEventListener('scroll', closeOnScroll, { passive: true });
+    return () => window.removeEventListener('scroll', closeOnScroll);
+  }, [toggle]);
+
   const go = (id: string) => {
     setActive(id); setToggle(false); setIsNavigating(true);
     setTimeout(() => {

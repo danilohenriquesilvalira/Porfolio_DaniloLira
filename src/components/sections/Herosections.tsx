@@ -112,11 +112,11 @@ const TiltImage = () => {
           transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
         >
           {/* outer glow ring */}
-          <div className="absolute -inset-3 rounded-full bg-yellow-400/30 blur-md" />
+          <div className="absolute -inset-2 sm:-inset-3 rounded-full bg-yellow-400/30 blur-md" />
 
           {/* yellow circle + image — identical to Jigar */}
           <div
-            className="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-[380px] lg:h-[380px]
+            className="relative w-36 h-36 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-[380px] lg:h-[380px]
                        rounded-full overflow-hidden select-none
                        shadow-[0_12px_40px_rgba(0,0,0,0.25)]"
             style={{ background: 'radial-gradient(circle at 60% 40%, #FFD700, #FFA500)' }}
@@ -154,50 +154,51 @@ const HeroSection = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center overflow-hidden bg-[#f7f7f7]"
+      className="relative min-h-[100dvh] flex items-center overflow-hidden bg-[#f7f7f7]"
       style={{ paddingTop: NAVBAR_H }}
     >
       {/* particles.js clone */}
       <ParticleBackground />
 
       <div className="relative z-10 w-full max-w-screen-xl mx-auto
-                      px-8 sm:px-12 lg:px-16
+                      px-5 sm:px-12 lg:px-16
                       flex flex-col-reverse lg:flex-row items-center justify-between
-                      gap-12 py-16 lg:py-0 min-h-[calc(100vh-72px)]">
+                      gap-5 sm:gap-10 lg:gap-12 py-6 sm:py-12 lg:py-0
+                      min-h-[calc(100dvh-72px)]">
 
         {/* ── LEFT ──────────────────────────────────────────────── */}
         <div className="flex-1 text-center lg:text-left">
 
-          <h3 className="text-xl font-medium text-slate-600 mb-3">
+          <h3 className="text-base sm:text-xl font-medium text-slate-600 mb-1.5 sm:mb-3">
             Olá, Eu Sou
           </h3>
 
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-slate-900 leading-tight mb-4">
+          <h2 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-slate-900 leading-tight mb-2 sm:mb-4">
             Danilo <span className="text-blue-600">Lira</span>
           </h2>
 
-          <p className="text-xl sm:text-2xl text-slate-600 mb-8 h-9">
+          <p className="text-base sm:text-2xl text-slate-600 mb-4 sm:mb-8 min-h-[1.75rem] sm:min-h-[2.25rem]">
             Sou&nbsp;
             <span className="text-blue-600 font-semibold">
               {typedText}
-              <span className="inline-block w-[2px] h-6 bg-blue-600 align-middle ml-0.5
+              <span className="inline-block w-[2px] h-4 sm:h-6 bg-blue-600 align-middle ml-0.5
                                animate-[blink_1s_step-end_infinite]" />
             </span>
           </p>
 
           <button
             onClick={() => scrollTo('about')}
-            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full
-                       bg-blue-600 hover:bg-blue-700 text-white font-semibold text-base
+            className="inline-flex items-center gap-2 sm:gap-2.5 px-6 sm:px-8 py-3 sm:py-4 rounded-full
+                       bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm sm:text-base
                        shadow-[0_5px_20px_rgba(37,99,235,0.55)]
                        hover:shadow-[0_8px_28px_rgba(37,99,235,0.65)]
-                       transition-all duration-300 mb-10"
+                       transition-all duration-300 mb-5 sm:mb-10"
           >
             Sobre Mim
-            <FaArrowCircleDown className="text-xl" />
+            <FaArrowCircleDown className="text-lg sm:text-xl" />
           </button>
 
-          <div className="flex items-center justify-center lg:justify-start gap-4">
+          <div className="flex items-center justify-center lg:justify-start gap-3 sm:gap-4">
             {socialLinks.map(({ href, Icon, label }) => (
               <a
                 key={label}
@@ -205,8 +206,8 @@ const HeroSection = () => {
                 target={href.startsWith('http') ? '_blank' : undefined}
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="w-12 h-12 rounded-full bg-slate-900 hover:bg-blue-600
-                           flex items-center justify-center text-white text-xl
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-900 hover:bg-blue-600
+                           flex items-center justify-center text-white text-lg sm:text-xl
                            shadow-lg hover:shadow-[0_4px_16px_rgba(37,99,235,0.5)]
                            transition-all duration-300 hover:-translate-y-1"
               >
@@ -225,7 +226,7 @@ const HeroSection = () => {
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1"
+        className="hidden sm:flex absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex-col items-center gap-1"
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
       >
